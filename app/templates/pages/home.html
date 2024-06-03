@@ -13,7 +13,7 @@
 
 <h1 class="govuk-heading-xl">Create or change a DNS entry</h1>
 
-<form action="/submit-dns-request" method="POST"></form>
+<form action="/submit-dns-request" method="POST">
 {{ govukInput({
     'label': {
       'text': "Requestor Name"
@@ -35,7 +35,7 @@
     },
     'classes': "govuk-!-width-full",
     'id': "service_owner",
-    'name': "serviceOwner"
+    'name': "service_owner"
   }) }}
 
   {{ govukInput({
@@ -47,12 +47,12 @@
     },
     'classes': "govuk-!-width-full",
     'id': "service_area",
-    'name': "serviceArea"
+    'name': "service_area"
   }) }}
 
   {{ govukSelect({
     'id': "business_area",
-    'name': "businessArea",
+    'name': "business_area"",
     'label': {
       'text': "Business Area Name"
     },
@@ -90,7 +90,7 @@
     },
     'classes': "govuk-!-width-full",
     'id': "domain_name",
-    'name': "domainName"
+    'name': "domain_name"
   }) }}
 
 
@@ -103,7 +103,7 @@
     },
     'classes': "govuk-!-width-full",
     'id': "service_description",
-    'name': "serviceDescription"
+    'name': "service_description"
   }) }}
 
 
@@ -116,12 +116,12 @@
     },
     'classes': "govuk-!-width-full",
     'id': "domain_purpose",
-    'name': "domainPurpose"
+    'name': "domain_purpose"
   }) }}
 
   {{ govukSelect({
     'id': "record_type",
-    'name': "recordType",
+    'name': "record_type",
     'label': {
       'text': "DNS Record Type"
     },
@@ -154,7 +154,7 @@
   }) }}
 
   {{ govukTextarea({
-    'name': "nsDetails",
+    'name': "ns_details",
     'id': "ns_details",
     'label': {
       'text': "NS Details (Optional)"
@@ -163,6 +163,10 @@
         'text': 'If NS record is selected, please provide a brief justification for its delegation'
     }
   }) }}
+
+  {{ govukButton({
+    'text': "Submit"
+    }) }}
 </form>
 
-  {% endblock %}
+{% endblock %}
