@@ -61,16 +61,16 @@ jobs:
           kubectl config get-contexts
           kubectl config use-context ${KUBE_CLUSTER}
 
-      - name: Deploy helm chart to operations-engineering-join-github-prod
+      - name: Deploy helm chart to operations-engineering-dns-form-prod
         run: |
-          helm upgrade join-github \
-            helm/join-github \
+          helm upgrade dns-form \
+            helm/dns-form \
             --install \
             --atomic \
             --force \
             --wait \
             --namespace ${KUBE_NAMESPACE} \
-            --values=helm/join-github/values-prod.yaml \
+            --values=helm/dns-form/values-prod.yaml \
             --set app.deployment.env.APP_SECRET_KEY=${FLASK_APP_SECRET} \
             --set app.deployment.env.ADMIN_GITHUB_TOKEN=${ADMIN_GITHUB_TOKEN} \
             --set app.deployment.env.SENTRY_DSN_KEY=${SENTRY_DSN_KEY} \

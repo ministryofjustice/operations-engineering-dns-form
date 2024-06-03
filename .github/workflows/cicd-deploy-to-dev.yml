@@ -56,14 +56,14 @@ jobs:
 
       - name: Deploy helm chart to dev
         run: |
-          helm upgrade join-github \
-            helm/join-github \
+          helm upgrade dns-form \
+            helm/dns-form \
             --install \
             --force \
             --wait \
             --timeout 10m \
             --namespace ${KUBE_NAMESPACE} \
-            --values=helm/join-github/values-dev.yaml \
+            --values=helm/dns-form/values-dev.yaml \
             --set app.deployment.env.APP_SECRET_KEY=${FLASK_APP_SECRET} \
             --set app.deployment.env.ADMIN_GITHUB_TOKEN=${ADMIN_GITHUB_TOKEN} \
             --set app.deployment.env.SENTRY_DSN_KEY=${SENTRY_DSN_KEY} \
