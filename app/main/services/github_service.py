@@ -1,30 +1,36 @@
 import logging
 
-import requests
 from github import Github
 
 from app.main.config.app_config import app_config
 
 logger = logging.getLogger(__name__)
 
-
 class GithubService:
-    def __init__(self, org_token: str) -> None:
+    def __init__(self, org_token: str, repository: str) -> None:
+        self.repository = repository
         self.github_client_core_api: Github = Github(org_token)
-        self.github_client_rest_api = requests.Session()
-        self.github_client_rest_api.headers.update(
-            {
-                "Accept": "application/vnd.github+json",
-                "Authorization": f"Bearer {org_token}",
-            }
-        )
+        self.repo = self.github_client_core_api.get_repo(repository)
 
-    def send_invites_to_user_email(self, email: str, organisations: list) -> None:
-        valid_orgs = [ organisation.name for organisation in app_config.github.organisations if organisation.enabled ]
-        for organisation in organisations:
-            if organisation in valid_orgs and app_config.github.send_email_invites_is_enabled:
-                self.github_client_core_api.get_organization(organisation.lower()).invite_user(email=email)
-            elif not app_config.github.send_email_invites_is_enabled:
-                logger.info("Invitation for organisation [ %s ] not sent as SEND_EMAIL_INVITES is [ %s ]", organisation, app_config.github.send_email_invites_is_enabled)
-            else:
-                logger.info("Invitation for organisation [ %s ] not sent as selected organisation is invalid", organisation)
+    def submit_issue(self, form_data: dict) -> None:
+        title = f"[DNS] {form_data['new_domain_name']}"
+        body = (
+            f"**Requestor Name:** {form_data['requestor_name']}\n\n"
+            f"**MoJ Service Owner:** {form_data['moj_service_owner']}\n\n"
+            f"**Service Area Name:** {form_data['service_area_name']}\n\n"
+            f"**Business Area Name:** {form_data['business_area_name']}\n\n"
+            f"**New Domain Name:** {form_data['new_domain_name']}\n\n"
+            f"**New Service Description:** {form_data['new_service_description']}\n\n"
+            f"**Purpose of New Domain:** {form_data['new_domain_purpose']}\n\n"
+            f"**DNS Record Type:** {form_data['type_of_record']}\n\n"
+            f"**NS Details:** {form_data.get('ns_details', 'N/A')}\n\n"
+            f"Template request for adding a new justice.gov.uk subdomain."
+        )
+        labels = ["dns-request", "add-subdomain-request"]
+
+        self.repo.create_issue(
+            title=title,
+            body=body,
+            labels=labels
+        )
+        logger.info(f"Issue created: {title}")
