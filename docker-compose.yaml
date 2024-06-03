@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  app:
+    build: .
+    image: "operations-engineering-dns-form"
+    container_name: "operations-engineering-dns-form"
+    environment:
+      # GitHub
+      ADMIN_GITHUB_TOKEN: fake
+
+      # Flask
+      APP_SECRET_KEY: dev
+      FLASK_DEBUG: true
+
+      # Sentry
+      # SENTRY_DSN_KEY:
+      SENTRY_ENV: local
+
+      # App
+      PHASE_BANNER_TEXT: "LOCAL DEV"
+      LOGGING_LEVEL: "DEBUG"
+    ports:
+      - "4567:4567"

@@ -1,0 +1,10 @@
+app:
+  ingress:
+    host: "dev.dns-form.service.justice.gov.uk"
+
+  deployment:
+    replicaCount: 1
+    env:
+      SENTRY_ENV: "development"
+      FLASK_DEBUG: true
+      PHASE_BANNER_TEXT: "DEV"
