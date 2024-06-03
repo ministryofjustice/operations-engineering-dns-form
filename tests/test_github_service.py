@@ -12,13 +12,13 @@ class TestGithubService(unittest.TestCase):
 
         form_data = {
             'requestor_name': 'John Requestor',
-            'moj_service_owner': 'Jane Owner',
-            'service_area_name': 'IT Department',
-            'business_area_name': 'HMPPS',
-            'new_domain_name': 'example.justice.gov.uk',
-            'new_service_description': 'A new service description.',
-            'new_domain_purpose': 'Primary purpose of the new domain.',
-            'type_of_record': 'A',
+            'service_owner': 'Jane Owner',
+            'service_area': 'IT Department',
+            'business_area': 'HMPPS',
+            'domain_name': 'example.justice.gov.uk',
+            'service_description': 'A new service description.',
+            'domain_purpose': 'Primary purpose of the new domain.',
+            'record_type': 'A',
             'ns_details': 'Justification for NS delegation.'
         }
 
