@@ -2,14 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "dns-form.fullname" . }}
-  labels: {{ - include "dns-form.labels" . | nindent 4 }}
+  labels: {{- include "dns-form.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.app.deployment.replicaCount }}
   selector:
-    matchLabels: {{ - include "dns-form.selectorLabels" . | nindent 6 }}
+    matchLabels: {{- include "dns-form.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      labels: {{ - include "dns-form.selectorLabels" . | nindent 8 }}
+      labels: {{- include "dns-form.selectorLabels" . | nindent 8 }}
     spec:
       # serviceAccountName created by the Cloud Platform environment
       serviceAccountName: cd-serviceaccount
