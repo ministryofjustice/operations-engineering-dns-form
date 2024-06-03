@@ -3,6 +3,7 @@
 coverage/
 venv/
 env/
+__pycache__/
 .DS_STORE
 .vscode
 *.code-workspace
