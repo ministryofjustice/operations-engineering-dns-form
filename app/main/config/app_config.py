@@ -6,19 +6,11 @@ def __get_env_var(name: str) -> str | None:
     return os.getenv(name)
 
 
-def __get_env_var_as_boolean(name: str) -> bool | None:
-    value = __get_env_var(name)
-
-    if value is None:
-        return False
-
-    if value.lower() == "true":
-        return True
-
-    return False
-
-
 app_config = SimpleNamespace(
+    github=SimpleNamespace(
+    repostory_name="ministryofjustice/operations-engineering",
+    token=__get_env_var("ADMIN_GITHUB_TOKEN"),
+    ),
     flask=SimpleNamespace(
         app_secret_key=__get_env_var("APP_SECRET_KEY"),
     ),
