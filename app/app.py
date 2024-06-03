@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 def create_app(
-    github_service=GithubService(app_config.github.token, app_config.github.repository),is_rate_limit_enabled=True
+    github_service=GithubService(app_config.github.token, app_config.github.repository_name),is_rate_limit_enabled=True
 ) -> Flask:
     configure_logging(app_config.logging_level)
 

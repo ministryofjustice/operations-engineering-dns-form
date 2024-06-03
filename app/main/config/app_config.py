@@ -8,7 +8,7 @@ def __get_env_var(name: str) -> str | None:
 
 app_config = SimpleNamespace(
     github=SimpleNamespace(
-    repostory_name="ministryofjustice/operations-engineering",
+    repository_name="ministryofjustice/operations-engineering",
     token=__get_env_var("ADMIN_GITHUB_TOKEN"),
     ),
     flask=SimpleNamespace(
