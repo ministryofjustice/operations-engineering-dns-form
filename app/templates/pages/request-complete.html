@@ -1,5 +1,12 @@
 {% extends "components/base.html" %}
 
 {% block content %}
-    <h1 class="govuk-heading-xl">Request submitted!</h1>
+    {{ govukPanel({
+        'titleText': 'Request sent to the Operations Engineering team.'
+    }) }}
+
+    <p class="govuk-body">
+        If you require further assistance contact us on the Operations Engineering team Slack channel <a
+            href="https://mojdt.slack.com/archives/C01BUKJSZD4" class="govuk-link">#ask-operations-engineering</a>.
+    </p>
 {% endblock %}
