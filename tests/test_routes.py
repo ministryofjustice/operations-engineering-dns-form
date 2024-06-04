@@ -19,6 +19,6 @@ class TestSubmitDNSRequest(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.request.path, "/submit-dns-request")
-        mock_submit_issue.assertCalledOnceWith(form_data)
+        mock_submit_issue.assert_called_once_with(form_data)
 
     
