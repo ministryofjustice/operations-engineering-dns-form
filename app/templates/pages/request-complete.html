@@ -1,5 +1,13 @@
+{% from 'govuk_frontend_jinja/components/panel/macro.html' import govukPanel %}
+
 {% extends "components/base.html" %}
 
 {% block content %}
-    <h1 class="govuk-heading-xl">Request submitted!</h1>
+    {{ govukPanel({
+        'titleText': 'Request sent to the Operations Engineering team.'
+    }) }}
+
+    <p class="govuk-body">
+        If you require further assistance contact us at <a href=mailto:“domains@digital.justice.gov.uk”>domains@digital.justice.gov.uk</a>
+    </p>
 {% endblock %}
