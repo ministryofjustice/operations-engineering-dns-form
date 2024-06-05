@@ -2,10 +2,10 @@ import logging
 
 from github import Github
 
-from app.main.config.app_config import app_config
-
 logger = logging.getLogger(__name__)
 
+
+# pylint: disable=R0903
 class GithubService:
     def __init__(self, org_token: str, repository: str) -> None:
         self.repository = repository
@@ -16,6 +16,7 @@ class GithubService:
         title = f"[DNS] {form_data['domain_name']}"
         body = (
             f"**Requestor Name:** {form_data['requestor_name']}\n\n"
+            f"**Requestor Email:** {form_data['requestor_email']}\n\n"
             f"**MoJ Service Owner:** {form_data['service_owner']}\n\n"
             f"**Service Area Name:** {form_data['service_area']}\n\n"
             f"**Business Area Name:** {form_data['business_area']}\n\n"
@@ -33,4 +34,4 @@ class GithubService:
             body=body,
             labels=labels
         )
-        logger.info(f"Issue created: {title}")
+        logger.info("Issue created: %s", title)

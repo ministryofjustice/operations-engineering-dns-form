@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
 {% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect %}
 {% from "govuk_frontend_jinja/components/textarea/macro.html" import govukTextarea %}
@@ -24,6 +26,18 @@
     'classes': "govuk-!-width-full",
     'id': "requestor_name",
     'name': "requestor_name"
+  }) }}
+
+  {{ govukInput({
+    'label': {
+      'text': "Requestor Email"
+    },
+    'hint': {
+        'text': 'Enter your email address'
+    },
+    'classes': "govuk-!-width-full",
+    'id': "requestor_email",
+    'name': "requestor_email"
   }) }}
 
   {{ govukInput({
