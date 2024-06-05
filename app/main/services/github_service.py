@@ -36,4 +36,3 @@ class GithubService:
             labels=labels
         )
         logger.info("Issue created: %s", title)
-
