@@ -35,5 +35,4 @@ class GithubService:
             body=body,
             labels=labels
         )
-        logging.getLogger().debug('test: %i' % 42)
-        logger.info("Issue created: %i" % title)
+        logger.info("Issue created: %s" % title)
