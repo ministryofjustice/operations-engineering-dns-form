@@ -14,7 +14,6 @@ class GithubService:
 
     def submit_issue(self, form_data: dict) -> None:
         title = f"[DNS] {form_data['domain_name']}"
-        print(form_data)
         body = (
             f"**Requestor Name:** {form_data['requestor_name']}\n\n"
             f"**Requestor Email:** {form_data['requestor_email']}\n\n"
