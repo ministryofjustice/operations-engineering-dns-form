@@ -29,7 +29,7 @@ class TestGithubService(unittest.TestCase):
         github_service.submit_issue(form_data)
 
         mock_repo.create_issue.assert_called_once()
-        kwargs = mock_repo.create_issue.call_args
+        args, kwargs = mock_repo.create_issue.call_args
         self.assertIn('[DNS] example.justice.gov.uk', kwargs['title'])
         self.assertIn('**Requestor Name:** John Requestor', kwargs['body'])
         self.assertIn('**Requestor Email:** john.requestor@digital.justice.gov.uk', kwargs['body'])
