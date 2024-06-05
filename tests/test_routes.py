@@ -13,7 +13,7 @@ class TestSubmitDNSRequest(unittest.TestCase):
         self.client = self.app.test_client()
 
     def test_submit_dns_request(self):
-        form_data = {'requestor_name': '', 'service_owner': '', 'service_area': '', 'business_area': 'hmpps', 'domain_name': '', 'service_description': '', 'domain_purpose': '', 'record_type': 'ns', 'ns_details': ''}
+        form_data = {'requestor_name': '', 'requestor_email': '', 'service_owner': '', 'service_area': '', 'business_area': 'hmpps', 'domain_name': '', 'service_description': '', 'domain_purpose': '', 'record_type': 'ns', 'ns_details': ''}
         response = self.client.post("/submit-dns-request", data=form_data)
 
         self.assertEqual(response.status_code, 200)
