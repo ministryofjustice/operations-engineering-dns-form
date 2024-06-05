@@ -12,6 +12,7 @@ class TestGithubService(unittest.TestCase):
 
         form_data = {
             'requestor_name': 'John Requestor',
+            'requestor_email': 'john.requestor@digital.justice.gov.uk',
             'service_owner': 'Jane Owner',
             'service_area': 'IT Department',
             'business_area': 'HMPPS',
@@ -30,6 +31,7 @@ class TestGithubService(unittest.TestCase):
         args, kwargs = mock_repo.create_issue.call_args
         self.assertIn('[DNS] example.justice.gov.uk', kwargs['title'])
         self.assertIn('**Requestor Name:** John Requestor', kwargs['body'])
+        self.assertIn('**Requestor Email:** john.requestor@digital.justice.gov.uk', kwargs['body'])
         self.assertIn('**MoJ Service Owner:** Jane Owner', kwargs['body'])
         self.assertIn('**Service Area Name:** IT Department', kwargs['body'])
         self.assertIn('**Business Area Name:** HMPPS', kwargs['body'])
