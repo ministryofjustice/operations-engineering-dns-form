@@ -4,13 +4,13 @@ from github import Github
 
 logger = logging.getLogger(__name__)
 
+
 # pylint: disable=R0903
 class GithubService:
     def __init__(self, org_token: str, repository: str) -> None:
         self.repository = repository
         self.github_client_core_api: Github = Github(org_token)
         self.repo = self.github_client_core_api.get_repo(repository)
-
 
     def submit_issue(self, form_data: dict) -> None:
         title = f"[DNS] {form_data['domain_name']}"
@@ -35,4 +35,5 @@ class GithubService:
             body=body,
             labels=labels
         )
-        logger.info("Issue created: %s" % title)
+        logger.info("Issue created: %s", title)
+
