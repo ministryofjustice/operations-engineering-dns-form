@@ -2,6 +2,7 @@ import re
 
 from flask import flash
 
+
 def is_valid_email_pattern(email):
     pattern = "^[a-zA-Z0-9._-]+@{1}[a-zA-Z0-9.-]+$"
     regex = re.compile(pattern)
@@ -10,12 +11,14 @@ def is_valid_email_pattern(email):
         return True
     return False
 
+
 def check_for_empty_values(data):
     for key, value in data.items():
-        if value == "":
+        if value == "" and key != 'ns_details':
             flash(f"Please enter a value for {key}.")
             return True
     return False
+
 
 def validate_request(data):
     valid_business_areas = ['hmpps', 'hmcts', 'cjscp', 'other']
