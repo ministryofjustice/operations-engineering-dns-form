@@ -1,3 +1,4 @@
+# pylint: disable=C0411
 import logging
 
 from flask import Flask
@@ -15,9 +16,10 @@ from app.main.services.github_service import GithubService
 logger = logging.getLogger(__name__)
 
 
-def create_app(
-    github_service=GithubService(app_config.github.token, app_config.github.repository_name),is_rate_limit_enabled=True
-) -> Flask:
+def create_app(github_service=None, is_rate_limit_enabled=True) -> Flask:
+    if github_service is None:
+        github_service = GithubService(app_config.github.token, app_config.github.repository_name)
+
     configure_logging(app_config.logging_level)
 
     logger.info("Starting app...")
@@ -26,7 +28,6 @@ def create_app(
 
     app.secret_key = app_config.flask.app_secret_key
     app.github_service = github_service
-
 
     configure_routes(app)
     configure_error_handlers(app)
