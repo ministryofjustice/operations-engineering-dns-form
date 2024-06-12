@@ -2,18 +2,19 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
+from app.main.config.app_config import app_config
 from app.app import create_app
 from app.main.services.github_service import GithubService
 
 
 class TestSubmitDNSRequest(unittest.TestCase):
-    @patch(
-        "app.main.config.app_config",
+    @patch.object(
+        app_config, 
         new=SimpleNamespace(
             github=SimpleNamespace(
                 repository_name="ministryofjustice/operations-engineering"
             )
-        ),
+        )
     )
     def setUp(self):
         self.github_service = MagicMock(GithubService)
