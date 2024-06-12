@@ -7,7 +7,7 @@ from app.main.services.github_service import GithubService
 
 class TestSubmitDNSRequest(unittest.TestCase):
     def setUp(self):
-        self.github_service = MagicMock(spec=GithubService)
+        self.github_service = MagicMock(GithubService(repository="ministryofjustice/operations-engineering-dns-form"))
         self.app = create_app(self.github_service, False)
         self.app.config["SECRET_KEY"] = "test_flask"
         self.client = self.app.test_client()
