@@ -14,6 +14,7 @@ from app.main.services.github_service import GithubService
 
 logger = logging.getLogger(__name__)
 
+
 def create_app(
     github_service=GithubService(app_config.github.token, app_config.github.repository_name),is_rate_limit_enabled=True
 ) -> Flask:
