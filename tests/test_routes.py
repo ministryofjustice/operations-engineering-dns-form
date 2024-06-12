@@ -7,14 +7,7 @@ from app.main.services.github_service import GithubService
 
 
 class TestSubmitDNSRequest(unittest.TestCase):
-    @patch(
-        "app.main.routes.make_request.app_config",
-        new=SimpleNamespace(
-            github=SimpleNamespace(
-                repository_name="ministryofjustice/operations-engineering"
-            )
-        ),
-    )
+    @patch("app.main.config.app_config")
     def setUp(self):
         self.github_service = MagicMock(GithubService)
         self.app = create_app(self.github_service, False)
