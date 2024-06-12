@@ -1,26 +1,17 @@
 import unittest
-from types import SimpleNamespace
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
-from app.main.config.app_config import app_config
 from app.app import create_app
 from app.main.services.github_service import GithubService
 
 
 class TestSubmitDNSRequest(unittest.TestCase):
-    @patch.object(
-        app_config, 
-        new=SimpleNamespace(
-            github=SimpleNamespace(
-                repository_name="ministryofjustice/operations-engineering"
-            )
-        )
-    )
     def setUp(self):
         self.github_service = MagicMock(GithubService)
         self.app = create_app(self.github_service, False)
         self.app.config["SECRET_KEY"] = "test_flask"
         self.client = self.app.test_client()
+        
 
     def test_submit_dns_request(self):
         form_data = {'requestor_name': 'g', 'requestor_email': 'g.g@gmail.com', 'service_owner': 'f', 'service_area': 'f', 'business_area': 'hmpps', 'domain_name': 'f', 'service_description': 'f', 'domain_purpose': 'f', 'record_type': 'ns', 'ns_details': ''}
