@@ -1,6 +1,8 @@
+# pylint: disable=C0411
 import logging
 
 from flask import Flask
+
 from app.main.config.app_config import app_config
 from app.main.config.cors_config import configure_cors
 from app.main.config.error_handlers_config import configure_error_handlers
