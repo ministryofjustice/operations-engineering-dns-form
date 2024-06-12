@@ -28,7 +28,6 @@ def create_app(github_service=None, is_rate_limit_enabled=True) -> Flask:
     app.secret_key = app_config.flask.app_secret_key
     app.github_service = github_service
 
-
     configure_routes(app)
     configure_error_handlers(app)
     configure_sentry(app_config.sentry.dsn_key, app_config.sentry.environment)
