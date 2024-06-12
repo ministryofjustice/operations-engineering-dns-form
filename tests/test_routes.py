@@ -11,7 +11,7 @@ class TestSubmitDNSRequest(unittest.TestCase):
         self.app = create_app(self.github_service, False)
         self.app.config["SECRET_KEY"] = "test_flask"
         self.client = self.app.test_client()
-        
+
     def test_submit_dns_request(self):
         form_data = {'requestor_name': 'g', 'requestor_email': 'g.g@gmail.com', 'service_owner': 'f', 'service_area': 'f', 'business_area': 'hmpps', 'domain_name': 'f', 'service_description': 'f', 'domain_purpose': 'f', 'record_type': 'ns', 'ns_details': ''}
         response = self.client.post("/submit-dns-request", data=form_data)
