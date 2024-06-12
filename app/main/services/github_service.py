@@ -8,7 +8,6 @@ logger = logging.getLogger(__name__)
 # pylint: disable=R0903
 class GithubService:
     def __init__(self, org_token: str, repository: str) -> None:
-        print(f"debug: {repository}")
         self.repository = repository
         self.github_client_core_api: Github = Github(org_token)
         self.repo = self.github_client_core_api.get_repo(repository)
