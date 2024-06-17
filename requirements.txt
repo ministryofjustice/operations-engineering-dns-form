@@ -1,5 +1,5 @@
 # Production
-email-validator==2.1.0.post1
+email-validator==2.1.2
 flask==3.0.2
 flask-cors==4.0.1
 Flask-Limiter==3.5.0
