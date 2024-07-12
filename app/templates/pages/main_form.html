@@ -1,0 +1,49 @@
+{% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
+{% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect %}
+{% from "govuk_frontend_jinja/components/textarea/macro.html" import govukTextarea %}
+
+{% extends "components/base.html" %}
+
+{% block pageTitle %}
+    Home
+{% endblock %}
+
+{% block content %}
+{{ super() }}
+
+<h1 class="govuk-heading-xl">DNS Change Request</h1>
+
+<form action="/select-change-type" method="POST">
+  {{ govukSelect({
+    'id': "change_type",
+    'name': "change_type",
+    'label': {
+      'text': "What type of DNS change do you require?"
+    },
+    'hint': {
+        'text': 'Select the type of DNS change you need'
+    },
+    'items': [
+      {
+        'value': "new_hostedzone",
+        'text': "New Hosted Zone",
+        'selected': true
+      },
+      {
+        'value': "change_record",
+        'text': "Change Existing Record"
+      },
+      {
+        'value': "create_record",
+        'text': "Create New Record"
+      }
+    ]
+  }) }}
+
+  {{ govukButton({
+    'text': "Next"
+    }) }}
+</form>
+
+{% endblock %}
+
