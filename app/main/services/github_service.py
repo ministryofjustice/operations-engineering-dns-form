@@ -12,7 +12,7 @@ class GithubService:
         self.github_client_core_api: Github = Github(org_token)
         self.repo = self.github_client_core_api.get_repo(repository)
 
-    def submit_issue(self, form_data: dict) -> None:
+    def submit_issue(self, form_data: dict) -> int:
         title = f"[DNS] {form_data['domain_name']}"
         body = (
             f"**Requestor Name:** {form_data['requestor_name']}\n\n"
@@ -27,11 +27,11 @@ class GithubService:
             f"**NS Details:** {form_data.get('ns_details', 'N/A')}\n\n"
             f"Template request for adding a new justice.gov.uk subdomain."
         )
+        if form_data["record_type"] == "cname" and "cname_value" in form_data:
+            body += f"**CNAME Value:** {form_data['cname_value']}\n\n"
+
         labels = ["dns-request", "add-subdomain-request"]
 
-        self.repo.create_issue(
-            title=title,
-            body=body,
-            labels=labels
-        )
+        issue = self.repo.create_issue(title=title, body=body, labels=labels)
         logger.info("Issue created: %s", title)
+        return issue.number
