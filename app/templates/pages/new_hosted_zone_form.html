@@ -1,0 +1,230 @@
+{% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
+{% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect %}
+{% from "govuk_frontend_jinja/components/textarea/macro.html" import govukTextarea %}
+
+{% extends "components/base.html" %}
+
+{% block pageTitle %}
+    New Hosted Zone
+{% endblock %}
+
+{% block content %}
+{{ super() }}
+
+<h1 class="govuk-heading-xl">Create a New Hosted Zone</h1>
+
+<form action="/new-hostedzone" method="POST">
+  {{ govukInput({
+    'label': {
+      'text': "Requestor Name"
+    },
+    'hint': {
+        'text': 'Enter your full name'
+    },
+    'classes': "govuk-!-width-full",
+    'id': "requestor_name",
+    'name': "requestor_name"
+  }) }}
+
+  {{ govukInput({
+    'label': {
+      'text': "Requestor Email"
+    },
+    'hint': {
+        'text': 'Enter your email address'
+    },
+    'classes': "govuk-!-width-full",
+    'id': "requestor_email",
+    'name': "requestor_email"
+  }) }}
+
+  {{ govukInput({
+    'label': {
+      'text': "MoJ Service Owner"
+    },
+    'hint': {
+        'text': 'Enter the name of the MoJ Service Owner'
+    },
+    'classes': "govuk-!-width-full",
+    'id': "service_owner",
+    'name': "service_owner"
+  }) }}
+
+  {{ govukInput({
+    'label': {
+      'text': "Service Area Name"
+    },
+    'hint': {
+        'text': 'Enter the name of the Service Area'
+    },
+    'classes': "govuk-!-width-full",
+    'id': "service_area",
+    'name': "service_area"
+  }) }}
+
+  {{ govukInput({
+    'label': {
+      'text': "Domain Name"
+    },
+    'hint': {
+        'text': 'Enter the new domain name you wish to add'
+    },
+    'classes': "govuk-!-width-full",
+    'id': "domain_name",
+    'name': "domain_name"
+  }) }}
+
+  {{ govukInput({
+    'label': {
+      'text': "TTL (Time to Live)"
+    },
+    'hint': {
+        'text': 'Enter the TTL value for the domain'
+    },
+    'classes': "govuk-!-width-full",
+    'id': "ttl",
+    'name': "ttl"
+  }) }}
+
+  {{ govukSelect({
+    'id': "record_type",
+    'name': "record_type",
+    'label': {
+      'text': "DNS Record Type"
+    },
+    'hint': {
+        'text': 'Select the type of DNS record required'
+    },
+    'items': [
+      {
+        'value': "ns",
+        'text': "NS",
+        'selected': true
+      },
+      {
+        'value': "a",
+        'text': "A"
+      },
+      {
+        'value': "mx",
+        'text': "MX"
+      },
+      {
+        'value': "cname",
+        'text': "CNAME"
+      },
+      {
+        'value': "txt",
+        'text': "TXT"
+      },
+      {
+        'value': "alias",
+        'text': "Route53Provider/ALIAS"
+      },
+      {
+        'value': "other",
+        'text': "Other"
+      }
+    ]
+  }) }}
+
+  <div id="nsValuesContainer" style="display: none;">
+    {{ govukTextarea({
+      'name': "ns_values",
+      'id': "ns_values",
+      'label': {
+        'text': "NS Values"
+      },
+      'hint': {
+          'text': 'Enter the name servers, separated by commas'
+      }
+    }) }}
+  </div>
+
+  <div id="aliasValuesContainer" style="display: none;">
+    {{ govukInput({
+      'label': {
+        'text': "Evaluate Target Health"
+      },
+      'hint': {
+          'text': 'Enter true or false'
+      },
+      'classes': "govuk-!-width-full",
+      'id': "evaluate_target_health",
+      'name': "evaluate_target_health"
+    }) }}
+    {{ govukInput({
+      'label': {
+        'text': "Hosted Zone ID"
+      },
+      'hint': {
+          'text': 'Enter the hosted zone ID'
+      },
+      'classes': "govuk-!-width-full",
+      'id': "hosted_zone_id",
+      'name': "hosted_zone_id"
+    }) }}
+    {{ govukInput({
+      'label': {
+        'text': "Alias Name"
+      },
+      'hint': {
+          'text': 'Enter the alias name'
+      },
+      'classes': "govuk-!-width-full",
+      'id': "alias_name",
+      'name': "alias_name"
+    }) }}
+    {{ govukInput({
+      'label': {
+        'text': "Alias Type"
+      },
+      'hint': {
+          'text': 'Enter the alias type'
+      },
+      'classes': "govuk-!-width-full",
+      'id': "alias_type",
+      'name': "alias_type"
+    }) }}
+  </div>
+
+  <div id="txtValueContainer" style="display: none;">
+    {{ govukTextarea({
+      'name': "txt_value",
+      'id': "txt_value",
+      'label': {
+        'text': "TXT Value"
+      },
+      'hint': {
+          'text': 'Enter the TXT value'
+      }
+    }) }}
+  </div>
+
+  {{ govukButton({
+    'text': "Submit"
+    }) }}
+</form>
+
+<script>
+  document.getElementById('record_type').addEventListener('change', function () {
+    var nsValuesContainer = document.getElementById('nsValuesContainer');
+    var aliasValuesContainer = document.getElementById('aliasValuesContainer');
+    var txtValueContainer = document.getElementById('txtValueContainer');
+
+    nsValuesContainer.style.display = 'none';
+    aliasValuesContainer.style.display = 'none';
+    txtValueContainer.style.display = 'none';
+
+    if (this.value === 'ns') {
+      nsValuesContainer.style.display = 'block';
+    } else if (this.value === 'alias') {
+      aliasValuesContainer.style.display = 'block';
+    } else if (this.value === 'txt') {
+      txtValueContainer.style.display = 'block';
+    }
+  });
+</script>
+
+{% endblock %}
+
