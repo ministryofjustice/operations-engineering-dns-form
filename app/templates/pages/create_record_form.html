@@ -88,6 +88,18 @@
     'name': "ttl"
   }) }}
 
+  {{ govukInput({
+    'label': {
+      'text': "Record Name"
+    },
+    'hint': {
+        'text': 'Enter the record name (e.g., zlo2uoj5k3ergpqnghq6uhkcjtjn4bcw._domainkey.courtfinder)'
+    },
+    'classes': "govuk-!-width-full",
+    'id': "record_name",
+    'name': "record_name"
+  }) }}
+
   {{ govukSelect({
     'id': "record_type",
     'name': "record_type",
