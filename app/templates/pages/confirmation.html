@@ -1,0 +1,18 @@
+{% extends "components/base.html" %}
+
+{% block pageTitle %}
+    Request Submitted
+{% endblock %}
+
+{% block content %}
+{{ super() }}
+
+<h1 class="govuk-heading-xl">DNS Record Request Submitted</h1>
+
+<p class="govuk-body">Thank you for your request. Your DNS record request has been successfully submitted. You can track the progress of your request using the link below:</p>
+
+<p class="govuk-body"><a href="{{ pr_url }}" class="govuk-link" target="_blank">{{ pr_url }}</a></p>
+
+<p class="govuk-body">If you need to get in touch with the team performing the DNS changes, please email <a href="mailto:domains@service.justice.gov.uk" class="govuk-link">domains@service.justice.gov.uk</a> or use the Ministry of Justice Slack channel <strong>#ask-operations-engineering</strong>.</p>
+
+{% endblock %}
