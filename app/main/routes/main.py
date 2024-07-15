@@ -20,22 +20,6 @@ def select_change_type():
     return redirect(url_for("main.index"))
 
 
-@main.route("/new-hostedzone", methods=["GET", "POST"])
-def new_hosted_zone():
-    if request.method == "POST":
-        form_data = request.form.to_dict()
-        return redirect("/")
-    return render_template("pages/new_hosted_zone_form.html")
-
-
-@main.route("/change-record", methods=["GET", "POST"])
-def change_record():
-    if request.method == "POST":
-        form_data = request.form.to_dict()
-        return redirect("/")
-    return render_template("pages/change_record_form.html")
-
-
 @main.route("/create-record", methods=["GET", "POST"])
 def create_record():
     if request.method == "POST":
