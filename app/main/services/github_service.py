@@ -49,8 +49,6 @@ class GithubService:
                 f"**Alias Type:** {form_data['alias_type']}\n\n"
             )
 
-        body += "Template request for adding a new DNS record."
-
         labels = ["dns-request", "add-record-request"]
 
         try:
