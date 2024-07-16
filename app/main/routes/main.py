@@ -11,13 +11,9 @@ def index():
 @main.route("/select-change-type", methods=["POST"])
 def select_change_type():
     change_type = request.form["change_type"]
-    if change_type == "new_hostedzone":
-        return redirect("/new-hostedzone")
-    elif change_type == "change_record":
-        return redirect("/change-record")
-    elif change_type == "create_record":
+    if change_type == "create_record":
         return redirect("/create-record")
-    return redirect(url_for("main.index"))
+    return redirect("/")
 
 
 @main.route("/create-record", methods=["GET", "POST"])
