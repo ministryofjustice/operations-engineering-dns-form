@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 import yaml
+
 from app.main.services.github_service import GithubService
 
 
@@ -71,7 +72,7 @@ class TestGithubService(unittest.TestCase):
         )
         self.mock_pr_repo.create_pull.assert_called_once_with(
             title="✨ Add a record to test.com",
-            body="Resolves https://github.com/issues_repo/issues/134",
+            body="This PR connects to https://github.com/issues_repo/issues/134",
             head=branch_name,
             base="main",
         )
@@ -121,7 +122,7 @@ class TestGithubService(unittest.TestCase):
         )
         self.mock_pr_repo.create_pull.assert_called_once_with(
             title="✨ Add a record to test.com",
-            body="Resolves https://github.com/issues_repo/issues/134",
+            body="This PR connects to https://github.com/issues_repo/issues/134",
             head=branch_name,
             base="main",
         )

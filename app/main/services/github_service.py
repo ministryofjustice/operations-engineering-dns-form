@@ -131,7 +131,7 @@ class GithubService:
 
         pr = self.pr_repo.create_pull(
             title=f"✨ Add {form_data['record_type']} record to {form_data['domain_name']}",
-            body=f"Resolves {issue_number}",
+            body=f"This PR connects to {issue_number}",
             head=branch_name,
             base="main",
         )
