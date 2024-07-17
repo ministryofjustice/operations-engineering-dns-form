@@ -58,6 +58,7 @@ class TestGithubService(unittest.TestCase):
 
     @patch("yaml.safe_load", return_value={})
     def test_create_pr(self, mock_safe_load):
+        _ = mock_safe_load
         mock_pull_request = MagicMock()
         mock_pull_request.html_url = "https://github.com/example/pull/1"
         self.mock_pr_repo.create_pull.return_value = mock_pull_request
@@ -78,13 +79,7 @@ class TestGithubService(unittest.TestCase):
         )
         self.assertEqual(pr_url, "https://github.com/example/pull/1")
 
-    @patch(
-        "yaml.safe_load",
-        return_value={
-            "existing_record": {"ttl": "300", "type": "A", "value": "192.0.2.2"}
-        },
-    )
-    def test_create_pr_with_existing_file(self, mock_safe_load):
+    def test_create_pr_with_existing_file(self):
         mock_pull_request = MagicMock()
         mock_pull_request.html_url = "https://github.com/example/pull/1"
         self.mock_pr_repo.create_pull.return_value = mock_pull_request
