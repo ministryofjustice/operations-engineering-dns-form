@@ -1,4 +1,3 @@
-
 {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
 {% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect %}
 {% from "govuk_frontend_jinja/components/textarea/macro.html" import govukTextarea %}
@@ -66,14 +65,14 @@
 
   {{ govukInput({
     'label': {
-      'text': "Domain Name"
+      'text': "DNS Record"
     },
     'hint': {
-        'text': 'Enter the domain name where you wish to add the record'
+        'text': 'Enter the full DNS record (e.g., example-record.courtfinder.service.gov.uk)'
     },
     'classes': "govuk-!-width-full",
-    'id': "domain_name",
-    'name': "domain_name"
+    'id': "dns_record",
+    'name': "dns_record"
   }) }}
 
   {{ govukInput({
@@ -86,18 +85,6 @@
     'classes': "govuk-!-width-full",
     'id': "ttl",
     'name': "ttl"
-  }) }}
-
-  {{ govukInput({
-    'label': {
-      'text': "Record Name"
-    },
-    'hint': {
-        'text': 'Enter the record name (e.g., zlo2uoj5k3ergpqnghq6uhkcjtjn4bcw._domainkey.courtfinder)'
-    },
-    'classes': "govuk-!-width-full",
-    'id': "record_name",
-    'name': "record_name"
   }) }}
 
   {{ govukSelect({
