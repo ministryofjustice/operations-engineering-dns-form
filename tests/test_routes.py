@@ -19,11 +19,12 @@ class TestSubmitDNSRequest(unittest.TestCase):
             "service_owner": "f",
             "service_area": "f",
             "business_area": "hmpps",
-            "domain_name": "example.com",
-            "record_name": "test_record",
+            "dns_record": "test.example.com",
             "ttl": "300",
             "record_type": "ns",
             "ns_values": "ns1.example.com, ns2.example.com",
+            "record_name": "test",
+            "domain_name": "example.com",
         }
         issue_mock = MagicMock()
         issue_mock.html_url = "https://github.com/example/issue/1"
