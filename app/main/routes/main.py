@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app, redirect, render_template, request, url_for
+from flask import Blueprint, current_app, redirect, render_template, request
 
 main = Blueprint("main", __name__)
 
@@ -20,6 +20,12 @@ def select_change_type():
 def create_record():
     if request.method == "POST":
         form_data = request.form.to_dict()
+
+        full_dns_record = form_data["dns_record"]
+        record_name, domain_name = full_dns_record.split(".", 1)
+
+        form_data["record_name"] = record_name
+        form_data["domain_name"] = domain_name
 
         issue = current_app.github_service.submit_issue(form_data)
         pr_link = current_app.github_service.create_pr(form_data, issue)

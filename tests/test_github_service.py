@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 import yaml
+
 from app.main.services.github_service import GithubService
 
 
@@ -57,6 +58,7 @@ class TestGithubService(unittest.TestCase):
 
     @patch("yaml.safe_load", return_value={})
     def test_create_pr(self, mock_safe_load):
+        _ = mock_safe_load
         mock_pull_request = MagicMock()
         mock_pull_request.html_url = "https://github.com/example/pull/1"
         self.mock_pr_repo.create_pull.return_value = mock_pull_request
@@ -71,19 +73,13 @@ class TestGithubService(unittest.TestCase):
         )
         self.mock_pr_repo.create_pull.assert_called_once_with(
             title="✨ Add a record to test.com",
-            body="Resolves https://github.com/issues_repo/issues/134",
+            body="This PR connects to https://github.com/issues_repo/issues/134",
             head=branch_name,
             base="main",
         )
         self.assertEqual(pr_url, "https://github.com/example/pull/1")
 
-    @patch(
-        "yaml.safe_load",
-        return_value={
-            "existing_record": {"ttl": "300", "type": "A", "value": "192.0.2.2"}
-        },
-    )
-    def test_create_pr_with_existing_file(self, mock_safe_load):
+    def test_create_pr_with_existing_file(self):
         mock_pull_request = MagicMock()
         mock_pull_request.html_url = "https://github.com/example/pull/1"
         self.mock_pr_repo.create_pull.return_value = mock_pull_request
@@ -121,7 +117,7 @@ class TestGithubService(unittest.TestCase):
         )
         self.mock_pr_repo.create_pull.assert_called_once_with(
             title="✨ Add a record to test.com",
-            body="Resolves https://github.com/issues_repo/issues/134",
+            body="This PR connects to https://github.com/issues_repo/issues/134",
             head=branch_name,
             base="main",
         )
