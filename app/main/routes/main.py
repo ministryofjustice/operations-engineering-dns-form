@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app, redirect, render_template, request
+from flask import Blueprint, current_app, jsonify, redirect, render_template, request
 
 main = Blueprint("main", __name__)
 
@@ -22,8 +22,21 @@ def create_record():
         form_data = request.form.to_dict()
 
         full_dns_record = form_data["dns_record"]
+        if "." not in full_dns_record:
+            return render_template(
+                "pages/create_record_form.html", error="Invalid DNS record format"
+            )
+
         record_name, domain_name = full_dns_record.split(".", 1)
 
+        hosted_zones = current_app.github_service.get_hosted_zones()
+        if domain_name not in hosted_zones:
+            return render_template(
+                "pages/create_record_form.html",
+                error=f"Domain {domain_name} does not exist",
+            )
+
+        # Update form_data with parsed values
         form_data["record_name"] = record_name
         form_data["domain_name"] = domain_name
 
@@ -33,3 +46,12 @@ def create_record():
         return render_template("pages/confirmation.html", pr_url=pr_link)
 
     return render_template("pages/create_record_form.html")
+
+
+@main.route("/api/hosted_zones", methods=["GET"])
+def get_hosted_zones():
+    try:
+        hosted_zones = current_app.github_service.get_hosted_zones()
+        return jsonify(hosted_zones)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

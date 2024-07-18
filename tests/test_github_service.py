@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 import yaml
+from github import GithubException
 
 from app.main.services.github_service import GithubService
 
@@ -123,6 +124,31 @@ class TestGithubService(unittest.TestCase):
         )
         self.assertEqual(pr_url, "https://github.com/example/pull/1")
 
+    @patch("app.main.services.github_service.Github")
+    def test_get_hosted_zones(self, mock_github):
+        mock_repo = MagicMock()
+        mock_github.return_value.get_repo.return_value = mock_repo
+        mock_contents = [
+            MagicMock(name="example1.yaml"),
+            MagicMock(name="example2.yaml"),
+        ]
+        mock_repo.get_contents.return_value = mock_contents
 
-if __name__ == "__main__":
-    unittest.main()
+        github_service = GithubService("token", "issues_repo", "pr_repo")
+        hosted_zones = github_service.get_hosted_zones()
+
+        mock_repo.get_contents.assert_called_once_with("hostedzones")
+        self.assertEqual(len(hosted_zones), 2)
+
+    @patch("app.main.services.github_service.Github")
+    def test_get_hosted_zones_error(self, mock_github):
+        mock_repo = MagicMock()
+        mock_github.return_value.get_repo.return_value = mock_repo
+        mock_repo.get_contents.side_effect = GithubException(404, "Not Found", {})
+
+        github_service = GithubService("token", "issues_repo", "pr_repo")
+
+        with self.assertRaises(GithubException):
+            github_service.get_hosted_zones()
+
+        mock_repo.get_contents.assert_called_once_with("hostedzones")
