@@ -1,3 +1,4 @@
+
 {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
 {% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect %}
 {% from "govuk_frontend_jinja/components/textarea/macro.html" import govukTextarea %}
@@ -13,6 +14,17 @@
 {{ super() }}
 
 <h1 class="govuk-heading-xl">Create a New DNS Record</h1>
+
+{% if error %}
+  <div class="govuk-error-summary" role="alert" aria-labelledby="error-summary-title" tabindex="-1" data-module="govuk-error-summary">
+    <h2 class="govuk-error-summary__title" id="error-summary-title">
+      There is a problem
+    </h2>
+    <div class="govuk-error-summary__body">
+      <p>{{ error }}</p>
+    </div>
+  </div>
+{% endif %}
 
 <form action="/create-record" method="POST">
   {{ govukInput({
@@ -68,7 +80,7 @@
       'text': "DNS Record"
     },
     'hint': {
-        'text': 'Enter the full DNS record (e.g., example-record.courtfinder.service.gov.uk)'
+        'text': 'Enter the full DNS record (e.g., zlo2uoj5k3ergpqnghq6uhkcjtjn4bcw._domainkey.courtfinder.service.gov.uk)'
     },
     'classes': "govuk-!-width-full",
     'id': "dns_record",
@@ -257,6 +269,15 @@
     var txtValueContainer = document.getElementById('txtValueContainer');
     var aliasValuesContainer = document.getElementById('aliasValuesContainer');
 
+    var hostedZones = [];
+    
+    fetch('/api/hosted_zones')
+      .then(response => response.json())
+      .then(data => {
+        hostedZones = data;
+      })
+      .catch(error => console.error('Error fetching hosted zones:', error));
+
     function toggleRecordValueContainer() {
       nsValuesContainer.style.display = 'none';
       aValueContainer.style.display = 'none';
@@ -284,6 +305,22 @@
 
     // Initialise the form with the correct container displayed
     toggleRecordValueContainer();
+
+    // Validate DNS record input
+    var dnsRecordInput = document.getElementById('dns_record');
+    dnsRecordInput.addEventListener('input', function() {
+      var fullDnsRecord = dnsRecordInput.value;
+      if (fullDnsRecord.includes('.')) {
+        var domainName = fullDnsRecord.split('.').slice(1).join('.');
+        if (hostedZones.includes(domainName)) {
+          dnsRecordInput.setCustomValidity('');
+        } else {
+          dnsRecordInput.setCustomValidity('The requested domain is not managed by this MoJ DNS service. Please check the domain name and try again.')
+        }
+      } else {
+        dnsRecordInput.setCustomValidity('Invalid DNS record format. It should be in the format of <subdomain>.<domain>.<tld>');
+      }
+    });
   });
 </script>
 

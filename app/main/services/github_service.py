@@ -137,3 +137,18 @@ class GithubService:
         )
         logger.info("Pull request created: %s", pr.html_url)
         return pr.html_url
+
+    def get_hosted_zones(self):
+        try:
+            contents = self.github_client_core_api.get_repo(
+                "ministryofjustice/dns"
+            ).get_contents("hostedzones")
+            hosted_zones = [
+                content.name.replace(".yaml", "")
+                for content in contents
+                if content.name.endswith(".yaml")
+            ]
+            return hosted_zones
+        except GithubException as e:
+            logger.error("Error fetching hosted zones: %s", e)
+            raise
