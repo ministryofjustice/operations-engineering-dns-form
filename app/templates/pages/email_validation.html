@@ -1,0 +1,35 @@
+{% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
+{% from "govuk_frontend_jinja/components/button/macro.html" import govukButton %}
+{% extends "components/base.html" %}
+
+{% block pageTitle %}
+   Email Verification
+{% endblock %}
+
+{% block content %}
+{{ super() }}
+
+<h1 class="govuk-heading-xl">Verify Your Email</h1>
+<p class="govuk-body">
+    Please enter your email address to verify your identity. We will send you a magic link to continue.
+</p>
+
+<form action="{{ url_for('capture_email') }}" method="POST">
+  {{ govukInput({
+    'id': "email",
+    'name': "email",
+    'type': "email",
+    'label': {
+      'text': "Email Address"
+    },
+    'hint': {
+      'text': "Enter your email address ending with @justice.gov.uk"
+    },
+  }) }}
+
+  {{ govukButton({
+    'text': "Send Magic Link"
+    }) }}
+</form>
+
+{% endblock %}

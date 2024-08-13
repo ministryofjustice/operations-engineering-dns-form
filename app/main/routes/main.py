@@ -1,6 +1,43 @@
-from flask import Blueprint, current_app, redirect, render_template, request
+from flask import (
+    Blueprint,
+    current_app,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
 
 main = Blueprint("main", __name__)
+
+ALLOWED_DOMAINS = ["justice.gov.uk", "digital.justice.gov.uk"]
+
+
+@main.route("/capture-email", methods=["GET", "POST"])
+def capture_email():
+    if request.method == "POST":
+        email = request.form["email"]
+        domain = email.split("@")[-1]
+
+        if domain is not ALLOWED_DOMAINS:
+            return "Unauthorized domain", 403
+
+        body = {
+            "client_id": current_app.config["AUTH0_CLIENT_ID"],
+            "connection": "email",
+            "email": email,
+            "send": "link",
+            "authParams": {
+                "scope": "openid email profile",
+                "redirect_uri": url_for("main.callback_handling", _external=True),
+            },
+        }
+
+        current_app.auth0_service.jobs.send_verification_email(body)
+        session["email"] = email
+        return redirect(url_for("main.magic_link_sent"))
+
+    return render_template("pages/capture_email.html")
 
 
 @main.route("/")
