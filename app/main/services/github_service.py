@@ -20,6 +20,10 @@ class GithubService:
 
     def submit_issue(self, form_data: dict) -> int:
         title = f"[DNS] Add record for {form_data['domain_name']}"
+        if form_data['deploy_time'] == 'specific_date':
+            change_date = f"{form_data['change_date-day']}/{form_data['change_date-month']}/{form_data['change_date-year']}"
+        else:
+            change_date = "ASAP"
         body = (
             f"**Requestor Name:** {form_data['requestor_name']}\n\n"
             f"**Requestor Email:** {form_data['requestor_email']}\n\n"
@@ -48,6 +52,8 @@ class GithubService:
                 f"**Alias Name:** {form_data['alias_name']}\n\n"
                 f"**Alias Type:** {form_data['alias_type']}\n\n"
             )
+
+        body += f"**Change Date:** {change_date}\n\n"
 
         labels = ["dns-request", "add-record-request"]
 
