@@ -2,6 +2,8 @@
 {% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect %}
 {% from "govuk_frontend_jinja/components/textarea/macro.html" import govukTextarea %}
 {% from "govuk_frontend_jinja/components/button/macro.html" import govukButton %}
+{% from "govuk_frontend_jinja/components/date-input/macro.html" import govukDateInput %}
+{% from "govuk_frontend_jinja/components/inset-text/macro.html" import govukInsetText %}
 
 {% extends "components/base.html" %}
 
@@ -242,6 +244,39 @@
     }) }}
   </div>
 
+    {{ govukSelect({
+    'id': "deploy_time",
+    'name': "deploy_time",
+    'label': {
+      'text': "Select a Date for Your Change"
+    },
+    'hint': {
+        'text': 'For example, 21/09/2024'
+    },
+    'items': [
+      {
+        'value': "ASAP",
+        'text': "ASAP",
+        'selected': true
+      },
+      {
+        'value': "specific_date",
+        'text': "Specific Date"
+      }
+    ]
+  }) }}
+
+  <div id="dateSelectionContainer" style="display: none;">
+    {{ govukInsetText({
+      'text': "Please note, if you select a date outside of normal working hours, we may reach out to receive justification for this request as we do not typically support changes out of hours."
+    }) }}
+
+    {{ govukDateInput({
+      'id': "change_date",
+      'namePrefix': "change_date"
+    }) }}
+  </div>
+
   {{ govukButton({
     'text': "Submit"
   }) }}
@@ -250,6 +285,9 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var recordType = document.getElementById('record_type');
+    var dateSelection = document.getElementById('deploy_time');
+
+    var dateSelectionContainer = document.getElementById('dateSelectionContainer');
     var nsValuesContainer = document.getElementById('nsValuesContainer');
     var aValueContainer = document.getElementById('aValueContainer');
     var mxValueContainer = document.getElementById('mxValueContainer');
@@ -280,10 +318,21 @@
       }
     }
 
-    recordType.addEventListener('change', toggleRecordValueContainer);
+    function toggleDateSelectionContainer() {
+      dateSelectionContainer.style.display = 'none';
 
-    // Initialise the form with the correct container displayed
+      if (dateSelection.value === 'specific_date') {
+        dateSelectionContainer.style.display = 'block';
+      }
+    }
+
+    recordType.addEventListener('change', toggleRecordValueContainer);
+    dateSelection.addEventListener('change', toggleDateSelectionContainer);
+
+
+    // Initialise the form with the correct containers displayed
     toggleRecordValueContainer();
+    toggleDateSelectionContainer();
   });
 </script>
 

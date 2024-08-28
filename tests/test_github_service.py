@@ -30,6 +30,7 @@ class TestGithubService(unittest.TestCase):
             "record_name": "test",
             "record_type": "a",
             "a_value": "192.0.2.1",
+            "deploy_time": "ASAP"
         }
 
     def test_submitting_an_issue(self):
@@ -51,6 +52,7 @@ class TestGithubService(unittest.TestCase):
                 "**Record Name:** test\n\n"
                 "**DNS Record Type:** a\n\n"
                 "**A Record Value:** 192.0.2.1\n\n"
+                "**Change Date:** ASAP\n\n"
             ),
             labels=["dns-request", "add-record-request"],
         )
