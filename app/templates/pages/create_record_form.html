@@ -248,10 +248,10 @@
     'id': "deploy_time",
     'name': "deploy_time",
     'label': {
-      'text': "Change Deploy Time"
+      'text': "Select a Date for Your Change"
     },
     'hint': {
-        'text': 'Select the date required for the change'
+        'text': 'For example, 21/09/2024'
     },
     'items': [
       {
@@ -273,17 +273,7 @@
 
     {{ govukDateInput({
       'id': "change_date",
-      'namePrefix': "change_date",
-      'fieldset': {
-        'legend': {
-          'text': "Please select a date for your change.",
-          'isPageHeading': true,
-          'classes': "govuk-fieldset__legend--l"
-        }
-      },
-      'hint': {
-        'text': "For example, 21/09/2024"
-      }
+      'namePrefix': "change_date"
     }) }}
   </div>
 
