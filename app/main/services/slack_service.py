@@ -1,3 +1,4 @@
+from typing import Optional
 from slack_sdk import WebClient
 import logging
 
@@ -11,8 +12,7 @@ class SlackService:
     def __init__(self, slack_token: str) -> None:
         self.slack_client = WebClient(slack_token)
 
-
-    def send_message_to_plaintext_channel_name(self, message, channel_name: str):
+    def send_message_to_plaintext_channel_name(self, message: str, channel_name: str) -> None:
         """
         Sends a message to a plaintext channel by name.
 
@@ -32,19 +32,20 @@ class SlackService:
             else:
                 logging.info("Message sent to channel %s", channel_name)
 
-    def _lookup_channel_id(self, channel_name, cursor=''):
+    def _lookup_channel_id(self, channel_name: str, cursor: str = '') -> Optional[str]:
         channel_id = None
         response = self.slack_client.conversations_list(
             limit=200, cursor=cursor)
 
-        if response['channels'] is not None:
-            for channel in response['channels']:
-                if channel['name'] == channel_name:
-                    channel_id = channel['id']
-                    break
+        channels = response.get('channels', [])
+        for channel in channels:
+            if channel.get('name') == channel_name:
+                channel_id = channel.get('id')
+                break
 
-        if channel_id is None and response['response_metadata']['next_cursor'] != '':
+        next_cursor = response.get('response_metadata', {}).get('next_cursor', '')
+        if channel_id is None and next_cursor:
             channel_id = self._lookup_channel_id(
-                channel_name, cursor=response['response_metadata']['next_cursor'])
+                channel_name, cursor=next_cursor)
 
         return channel_id
