@@ -14,6 +14,7 @@ env:
   ECR_REGISTRY: ${{ vars.DEV_ECR_REGISTRY }}
   ECR_REPOSITORY: ${{ vars.DEV_ECR_REPOSITORY }}
   ADMIN_GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+  ADMIN_SLACK_TOKEN: ${{ secrets.ADMIN_SLACK_TOKEN }}
   FLASK_APP_SECRET: ${{ secrets.DEV_FLASK_APP_SECRET }}
   SENTRY_DSN_KEY: ${{ secrets.SENTRY_DSN_KEY }}
 
@@ -66,6 +67,7 @@ jobs:
             --values=helm/dns-form/values-dev.yaml \
             --set app.deployment.env.APP_SECRET_KEY=${FLASK_APP_SECRET} \
             --set app.deployment.env.ADMIN_GITHUB_TOKEN=${ADMIN_GITHUB_TOKEN} \
+            --set app.deployment.env.ADMIN_SLACK_TOKEN=${ADMIN_SLACK_TOKEN} \
             --set app.deployment.env.SENTRY_DSN_KEY=${SENTRY_DSN_KEY} \
             --set app.deployment.image.repository=${ECR_REGISTRY}/${ECR_REPOSITORY} \
             --set app.deployment.image.tag=${IMAGE_TAG}
