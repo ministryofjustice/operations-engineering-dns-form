@@ -12,6 +12,9 @@ app_config = SimpleNamespace(
         pull_request_repository="ministryofjustice/dns",
         token=__get_env_var("ADMIN_GITHUB_TOKEN"),
     ),
+    slack=SimpleNamespace(
+        token=__get_env_var("ADMIN_SLACK_TOKEN")
+    ),
     flask=SimpleNamespace(
         app_secret_key=__get_env_var("APP_SECRET_KEY"),
     ),
