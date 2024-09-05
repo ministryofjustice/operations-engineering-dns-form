@@ -45,7 +45,7 @@ class SlackService:
 
         next_cursor = response.get('response_metadata', {}).get('next_cursor', '')
         if channel_id is None and next_cursor:
-            channel_id = self._lookup_channel_id(
+            channel_id = self.lookup_channel_id(
                 channel_name, cursor=next_cursor)
 
         return channel_id

@@ -13,12 +13,9 @@ class TestSendMessageToPlainTextChannelName(unittest.TestCase):
     RESPONSE_OK = {"ok": True}
     RESPONSE_ERROR = {'ok': False, "error": "some-error"}
 
-    @patch("slack_sdk.WebClient.__new__")
-    def setUp(self, mock_web_client):
+    def setUp(self):
         self.channel = {'name': self.CHANNEL_NAME, 'id': self.CHANNEL_ID}
         self.slack_client = MagicMock()
-        self.mock_web_client = mock_web_client
-        self.mock_web_client.return_value = self.slack_client
         self.slack_service = SlackService("")
         self.slack_client.conversations_list.return_value = {
             'channels': [self.channel], 'response_metadata': self.RESPONSE_METADATA}
