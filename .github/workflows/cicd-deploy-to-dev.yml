@@ -51,7 +51,7 @@ jobs:
           echo "${KUBE_CERT}" > ca.crt
           kubectl config set-cluster "${KUBE_CLUSTER}" --certificate-authority=./ca.crt --server="https://${KUBE_CLUSTER}"
           kubectl config set-credentials deploy-user --token="${KUBE_TOKEN}"
-          kubectl config set-context "${KUBE_CLUSTER}" --cluster="${KUBE_CLUSTER}" --user=deploy-user --namespace=$"{KUBE_NAMESPACE}"
+          kubectl config set-context "${KUBE_CLUSTER}" --cluster="${KUBE_CLUSTER}" --user=deploy-user --namespace="${KUBE_NAMESPACE}"
           kubectl config get-contexts
           kubectl config use-context "${KUBE_CLUSTER}"
 

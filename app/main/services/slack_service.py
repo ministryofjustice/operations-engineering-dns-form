@@ -20,7 +20,7 @@ class SlackService:
             message (str): The message to send.
             channel_name (str): The name of the channel to send the message to.
         """
-        channel_id = self._lookup_channel_id(channel_name)
+        channel_id = self.lookup_channel_id(channel_name)
         if channel_id is None:
             logging.error("Could not find channel %s", channel_name)
         else:
@@ -32,7 +32,7 @@ class SlackService:
             else:
                 logging.info("Message sent to channel %s", channel_name)
 
-    def _lookup_channel_id(self, channel_name: str, cursor: str = '') -> Optional[str]:
+    def lookup_channel_id(self, channel_name: str, cursor: str = '') -> Optional[str]:
         channel_id = None
         response = self.slack_client.conversations_list(
             limit=200, cursor=cursor)
