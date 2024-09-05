@@ -21,6 +21,9 @@ spec:
             - name: ADMIN_GITHUB_TOKEN
               value:
                 {{ .Values.app.deployment.env.ADMIN_GITHUB_TOKEN | quote }}
+            - name: ADMIN_SLACK_TOKEN
+              value:
+                {{ .Values.app.deployment.env.ADMIN_SLACK_TOKEN | quote }}
             - name: APP_SECRET_KEY
               value: {{ .Values.app.deployment.env.APP_SECRET_KEY | quote }}
             - name: FLASK_DEBUG

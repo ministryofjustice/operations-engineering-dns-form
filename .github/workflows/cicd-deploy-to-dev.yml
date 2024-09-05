@@ -14,6 +14,7 @@ env:
   ECR_REGISTRY: ${{ vars.DEV_ECR_REGISTRY }}
   ECR_REPOSITORY: ${{ vars.DEV_ECR_REPOSITORY }}
   ADMIN_GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+  ADMIN_SLACK_TOKEN: ${{ secrets.ADMIN_SLACK_TOKEN }}
   FLASK_APP_SECRET: ${{ secrets.DEV_FLASK_APP_SECRET }}
   SENTRY_DSN_KEY: ${{ secrets.SENTRY_DSN_KEY }}
 
@@ -34,8 +35,8 @@ jobs:
       - uses: aws-actions/amazon-ecr-login@v2
         id: login-ecr
       - run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" .
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
   deploy-to-dev:
     needs: build-push
@@ -48,11 +49,11 @@ jobs:
       - name: Authenticate to the cluster
         run: |
           echo "${KUBE_CERT}" > ca.crt
-          kubectl config set-cluster ${KUBE_CLUSTER} --certificate-authority=./ca.crt --server=https://${KUBE_CLUSTER}
-          kubectl config set-credentials deploy-user --token=${KUBE_TOKEN}
-          kubectl config set-context ${KUBE_CLUSTER} --cluster=${KUBE_CLUSTER} --user=deploy-user --namespace=${KUBE_NAMESPACE}
+          kubectl config set-cluster "${KUBE_CLUSTER}" --certificate-authority=./ca.crt --server="https://${KUBE_CLUSTER}"
+          kubectl config set-credentials deploy-user --token="${KUBE_TOKEN}"
+          kubectl config set-context "${KUBE_CLUSTER}" --cluster="${KUBE_CLUSTER}" --user=deploy-user --namespace="${KUBE_NAMESPACE}"
           kubectl config get-contexts
-          kubectl config use-context ${KUBE_CLUSTER}
+          kubectl config use-context "${KUBE_CLUSTER}"
 
       - name: Deploy helm chart to dev
         run: |
@@ -62,10 +63,11 @@ jobs:
             --force \
             --wait \
             --timeout 10m \
-            --namespace ${KUBE_NAMESPACE} \
+            --namespace "${KUBE_NAMESPACE}" \
             --values=helm/dns-form/values-dev.yaml \
-            --set app.deployment.env.APP_SECRET_KEY=${FLASK_APP_SECRET} \
-            --set app.deployment.env.ADMIN_GITHUB_TOKEN=${ADMIN_GITHUB_TOKEN} \
-            --set app.deployment.env.SENTRY_DSN_KEY=${SENTRY_DSN_KEY} \
-            --set app.deployment.image.repository=${ECR_REGISTRY}/${ECR_REPOSITORY} \
-            --set app.deployment.image.tag=${IMAGE_TAG}
+            --set app.deployment.env.APP_SECRET_KEY="${FLASK_APP_SECRET}" \
+            --set app.deployment.env.ADMIN_GITHUB_TOKEN="${ADMIN_GITHUB_TOKEN}" \
+            --set app.deployment.env.ADMIN_SLACK_TOKEN="${ADMIN_SLACK_TOKEN}" \
+            --set app.deployment.env.SENTRY_DSN_KEY="${SENTRY_DSN_KEY}" \
+            --set app.deployment.image.repository="${ECR_REGISTRY}/${ECR_REPOSITORY}" \
+            --set app.deployment.image.tag="${IMAGE_TAG}"
