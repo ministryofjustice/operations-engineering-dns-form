@@ -1,4 +1,5 @@
 from flask import Blueprint, current_app, redirect, render_template, request
+from slack_sdk.errors import SlackApiError
 
 main = Blueprint("main", __name__)
 
@@ -27,8 +28,18 @@ def create_record():
         form_data["record_name"] = record_name
         form_data["domain_name"] = domain_name
 
-        issue = current_app.github_service.submit_issue(form_data)
-        pr_link = current_app.github_service.create_pr(form_data, issue)
+        issue_link = current_app.github_service.submit_issue(form_data)
+        pr_link = current_app.github_service.create_pr(form_data, issue_link)
+
+        try:
+            slack_service = current_app.slack_service
+            slack_message = f"A new DNS user request has been created : PR: {pr_link}, Issue:{issue_link}"
+            slack_service.send_message_to_plaintext_channel_name(
+                message=slack_message,
+                channel_name="test_dns_notifications"
+            )
+        except SlackApiError as e:
+            current_app.logger.error(f"Failed to send new DNS request notification to slack: {str(e)}")
 
         return render_template("pages/confirmation.html", pr_url=pr_link)
 
