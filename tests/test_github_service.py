@@ -56,7 +56,7 @@ class TestGithubService(unittest.TestCase):
             ),
             labels=["dns-request", "add-record-request"],
         )
-        self.assertEqual(issue, 134)
+        self.assertEqual(issue, "https://github.com/issues_repo/issues/134")
 
     @patch("yaml.safe_load", return_value={})
     def test_create_pr(self, mock_safe_load):
@@ -65,8 +65,8 @@ class TestGithubService(unittest.TestCase):
         mock_pull_request.html_url = "https://github.com/example/pull/1"
         self.mock_pr_repo.create_pull.return_value = mock_pull_request
 
-        issue_number = 134
-        pr_url = self.github_service.create_pr(self.form_data, issue_number)
+        issue_link = "https://github.com/issues_repo/issues/134"
+        pr_url = self.github_service.create_pr(self.form_data, issue_link)
 
         branch_name = "add-test.com-record-test"
         self.mock_pr_repo.create_git_ref.assert_called_once_with(
@@ -92,8 +92,8 @@ class TestGithubService(unittest.TestCase):
         )
         self.mock_pr_repo.get_contents.return_value = mock_content
 
-        issue_number = 134
-        pr_url = self.github_service.create_pr(self.form_data, issue_number)
+        issue_url = "https://github.com/issues_repo/issues/134"
+        pr_url = self.github_service.create_pr(self.form_data, issue_url)
 
         branch_name = "add-test.com-record-test"
         self.mock_pr_repo.create_git_ref.assert_called_once_with(
