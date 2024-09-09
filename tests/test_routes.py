@@ -1,10 +1,10 @@
 import unittest
 from unittest.mock import MagicMock
+from slack_sdk.errors import SlackApiError
 
 from app.app import create_app
 from app.main.services.github_service import GithubService
 from app.main.services.slack_service import SlackService
-from slack_sdk.errors import SlackApiError
 
 
 class TestSubmitDNSRequest(unittest.TestCase):
@@ -28,7 +28,6 @@ class TestSubmitDNSRequest(unittest.TestCase):
             "record_name": "test",
             "domain_name": "example.com",
         }
-
 
     def test_submit_dns_request(self):
 
@@ -59,7 +58,7 @@ class TestSubmitDNSRequest(unittest.TestCase):
         self.slack_service.send_message_to_plaintext_channel_name.side_effect = SlackApiError(
             message="Slack API error",
             response={"ok": False, "error": "invalid_auth"}
-    )
+            )
 
         with unittest.mock.patch.object(self.app.logger, 'error') as mock_logger:
             response = self.client.post("/create-record", data=self.form_data)

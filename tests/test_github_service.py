@@ -6,7 +6,7 @@ import yaml
 from github.GithubException import GithubException
 from app.main.services.github_service import GithubService
 
-
+# pylint: disable=W0221
 class TestGithubService(unittest.TestCase):
 
     @patch("app.main.services.github_service.Github")
@@ -81,7 +81,6 @@ class TestGithubService(unittest.TestCase):
             ),
             labels=["dns-request", "add-record-request"],
         )
-
 
     @patch("yaml.safe_load", return_value={})
     def test_create_pr(self, mock_safe_load):

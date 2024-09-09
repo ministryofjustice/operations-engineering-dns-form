@@ -7,7 +7,7 @@ from github.GithubException import GithubException
 logger = logging.getLogger(__name__)
 
 
-# pylint: disable=R0903
+# pylint: disable=R0903,R0194
 class GithubService:
     def __init__(
         self, org_token: str, issues_repository: str, pull_request_repository: str
