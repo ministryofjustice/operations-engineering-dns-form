@@ -3,8 +3,8 @@ from unittest.mock import MagicMock, patch
 
 import yaml
 
-from app.main.services.github_service import GithubService
 from github.GithubException import GithubException
+from app.main.services.github_service import GithubService
 
 
 class TestGithubService(unittest.TestCase):

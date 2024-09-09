@@ -6,6 +6,7 @@ from app.main.services.github_service import GithubService
 from app.main.services.slack_service import SlackService
 from slack_sdk.errors import SlackApiError
 
+
 class TestSubmitDNSRequest(unittest.TestCase):
     def setUp(self):
         self.github_service = MagicMock(GithubService)
@@ -76,4 +77,3 @@ class TestSubmitDNSRequest(unittest.TestCase):
             mock_logger.assert_called_once_with(
                 "Failed to send new DNS request notification to slack: Slack API error\nThe server responded with: {'ok': False, 'error': 'invalid_auth'}"
                 )
-
