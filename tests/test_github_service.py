@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, patch
 import yaml
 
 from app.main.services.github_service import GithubService
+from github.GithubException import GithubException
 
 
 class TestGithubService(unittest.TestCase):
@@ -58,6 +59,30 @@ class TestGithubService(unittest.TestCase):
         )
         self.assertEqual(issue, "https://github.com/issues_repo/issues/134")
 
+    def test_submit_issue_github_exception(self):
+
+        self.mock_issues_repo.create_issue.side_effect = GithubException(500, "Error creating issue")
+        with self.assertRaises(GithubException):
+            self.github_service.submit_issue(self.form_data)
+
+        self.mock_issues_repo.create_issue.assert_called_once_with(
+            title="[DNS] Add record for test.com",
+            body=(
+                "**Requestor Name:** test\n\n"
+                "**Requestor Email:** test@test.com\n\n"
+                "**MoJ Service Owner:** test\n\n"
+                "**Service Area Name:** test\n\n"
+                "**Domain Name:** test.com\n\n"
+                "**TTL:** 300\n\n"
+                "**Record Name:** test\n\n"
+                "**DNS Record Type:** a\n\n"
+                "**A Record Value:** 192.0.2.1\n\n"
+                "**Change Date:** ASAP\n\n"
+            ),
+            labels=["dns-request", "add-record-request"],
+        )
+
+
     @patch("yaml.safe_load", return_value={})
     def test_create_pr(self, mock_safe_load):
         _ = mock_safe_load
@@ -80,6 +105,18 @@ class TestGithubService(unittest.TestCase):
             base="main",
         )
         self.assertEqual(pr_url, "https://github.com/example/pull/1")
+
+    def test_create_pr_github_exception(self):
+
+        self.mock_pr_repo.create_git_ref.side_effect = GithubException(500, "Error creating git ref")
+        issue_link = "https://github.com/issues_repo/issues/134"
+        with self.assertRaises(GithubException):
+            self.github_service.create_pr(self.form_data, issue_link)
+
+        self.mock_pr_repo.create_git_ref.assert_called_once_with(
+            ref="refs/heads/add-test.com-record-test",
+            sha=self.mock_pr_repo.get_git_ref.return_value.object.sha,
+        )
 
     def test_create_pr_with_existing_file(self):
         mock_pull_request = MagicMock()
