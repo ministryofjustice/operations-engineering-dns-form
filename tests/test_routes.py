@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
-
+# pylint: disable=C0411
 from slack_sdk.errors import SlackApiError
 
 from app.app import create_app
