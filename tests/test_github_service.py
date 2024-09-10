@@ -9,12 +9,13 @@ from app.main.services.github_service import GithubService
 
 class TestGithubService(unittest.TestCase):
 
-    @patch("app.main.services.github_service.Github")
-    def setUp(self, mock_github):
-        self.mock_github = mock_github
+
+    def setUp(self):
+        self.mock_github_patcher = patch("app.main.services.github_service.Github")
+        self.mock_github = self.mock_github_patcher.start()
         self.mock_issues_repo = MagicMock()
         self.mock_pr_repo = MagicMock()
-        self.mock_github_instance = mock_github.return_value
+        self.mock_github_instance = self.mock_github.return_value
         self.mock_github_instance.get_repo.side_effect = [
             self.mock_issues_repo,
             self.mock_pr_repo,
@@ -33,6 +34,10 @@ class TestGithubService(unittest.TestCase):
             "a_value": "192.0.2.1",
             "deploy_time": "ASAP"
         }
+
+    def tearDown(self):
+        # Stop patching to clean up after tests
+        self.mock_github_patcher.stop()
 
     def test_submitting_an_issue(self):
         mock_issue = MagicMock()
