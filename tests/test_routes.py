@@ -44,8 +44,8 @@ class TestSubmitDNSRequest(unittest.TestCase):
         self.github_service.submit_issue.assert_called_once_with(self.form_data)
         self.github_service.create_pr.assert_called_once_with(self.form_data, issue_link)
         self.slack_service.send_message_to_plaintext_channel_name.assert_called_once_with(
-            message=f"A new DNS user request has been created : PR: {pr_link}, Issue:{issue_link}",
-            channel_name="test_dns_notifications"
+            message=f"A new DNS user request has been created\nPR: {pr_link}\nIssue: {issue_link}",
+            channel_name="test-dns-notifications"
         )
 
     def test_slack_api_error_handling(self):
@@ -70,8 +70,8 @@ class TestSubmitDNSRequest(unittest.TestCase):
             self.github_service.submit_issue.assert_called_once_with(self.form_data)
             self.github_service.create_pr.assert_called_once_with(self.form_data, issue_link)
             self.slack_service.send_message_to_plaintext_channel_name.assert_called_once_with(
-                message=f"A new DNS user request has been created : PR: {pr_link}, Issue:{issue_link}",
-                channel_name="test_dns_notifications"
+                message=f"A new DNS user request has been created\nPR: {pr_link}\nIssue: {issue_link}",
+                channel_name="test-dns-notifications"
             )
 
             mock_logger.assert_called_once_with(
