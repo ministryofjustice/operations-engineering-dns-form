@@ -35,7 +35,7 @@ def create_record():
             slack_message = f"A new DNS user request has been created\nPR: {pr_link}\nIssue: {issue_link}"
             current_app.slack_service.send_message_to_plaintext_channel_name(
                 message=slack_message,
-                channel_name="test-dns-notifications"
+                channel_name="operations-engineering-alerts"
             )
         except SlackApiError as e:
             current_app.logger.error(f"Failed to send new DNS request notification to slack: {str(e)}")
