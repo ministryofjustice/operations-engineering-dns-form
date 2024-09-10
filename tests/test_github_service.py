@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 import yaml
-
+# pylint: disable=C0411
 from github.GithubException import GithubException
 from app.main.services.github_service import GithubService
 
