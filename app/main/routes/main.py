@@ -32,10 +32,10 @@ def create_record():
         pr_link = current_app.github_service.create_pr(form_data, issue_link)
 
         try:
-            slack_message = f"A new DNS user request has been created : PR: {pr_link}, Issue:{issue_link}"
+            slack_message = f"A new DNS user request has been created\nPR: {pr_link}\nIssue: {issue_link}"
             current_app.slack_service.send_message_to_plaintext_channel_name(
                 message=slack_message,
-                channel_name="test_dns_notifications"
+                channel_name="test-dns-notifications"
             )
         except SlackApiError as e:
             current_app.logger.error(f"Failed to send new DNS request notification to slack: {str(e)}")
