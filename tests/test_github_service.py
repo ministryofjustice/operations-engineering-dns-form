@@ -9,7 +9,6 @@ from app.main.services.github_service import GithubService
 
 class TestGithubService(unittest.TestCase):
 
-
     def setUp(self):
         self.mock_github_patcher = patch("app.main.services.github_service.Github")
         self.mock_github = self.mock_github_patcher.start()
