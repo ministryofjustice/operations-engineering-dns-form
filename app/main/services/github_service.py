@@ -7,7 +7,7 @@ from github.GithubException import GithubException
 logger = logging.getLogger(__name__)
 
 
-# pylint: disable=R0903
+# pylint: disable=R0903, R0914
 class GithubService:
     def __init__(
         self, org_token: str, issues_repository: str, pull_request_repository: str
@@ -59,19 +59,18 @@ class GithubService:
 
         try:
             issue = self.issues_repo.create_issue(title=title, body=body, labels=labels)
+            issue_link = f"https://github.com/{self.issues_repository}/issues/{issue.number}"
             logger.info("Issue created: %s", title)
-            return issue.number
+            return issue_link
         except GithubException as e:
             logger.error("Error creating issue: %s", e)
             raise
 
-    def create_pr(self, form_data: dict, issue_number) -> str:
+    def create_pr(self, form_data: dict, issue_link) -> str:
         branch_name = (
             f"add-{form_data['domain_name']}-record-{form_data['record_name']}"
         )
-        issue_number = (
-            f"https://github.com/{self.issues_repository}/issues/{issue_number}"
-        )
+
         file_path = f"hostedzones/{form_data['domain_name']}.yaml"
 
         record_name = form_data["record_name"]
@@ -137,7 +136,7 @@ class GithubService:
 
         pr = self.pr_repo.create_pull(
             title=f"✨ Add {form_data['record_type']} record to {form_data['domain_name']}",
-            body=f"This PR connects to {issue_number}",
+            body=f"This PR connects to {issue_link}",
             head=branch_name,
             base="main",
         )
