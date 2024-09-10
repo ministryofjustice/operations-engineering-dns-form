@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import MagicMock
 
 from slack_sdk.errors import SlackApiError
+
 from app.app import create_app
 from app.main.services.github_service import GithubService
 from app.main.services.slack_service import SlackService
