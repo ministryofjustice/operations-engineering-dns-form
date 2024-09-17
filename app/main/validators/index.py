@@ -3,13 +3,18 @@ import re
 from flask import flash
 
 
+def is_contains_only_alphabetic_chars(value):
+    pattern = r"^[A-Za-z\s]+$"
+    regex = re.compile(pattern)
+    result = regex.fullmatch(email)
+    return result is not None
+
+
 def is_valid_email_pattern(email):
     pattern = "^[a-zA-Z0-9._-]+@{1}[a-zA-Z0-9.-]+$"
     regex = re.compile(pattern)
-    result = regex.match(email)
-    if result:
-        return True
-    return False
+    result = regex.fullmatch(email)
+    return result is not None
 
 
 def check_for_empty_values(data):
