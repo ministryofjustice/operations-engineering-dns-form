@@ -6,7 +6,7 @@ from flask import flash
 def is_contains_only_alphabetic_chars(value):
     pattern = r"^[A-Za-z\s]+$"
     regex = re.compile(pattern)
-    result = regex.fullmatch(email)
+    result = regex.fullmatch(value)
     return result is not None
 
 
@@ -40,3 +40,12 @@ def validate_request(data):
     if check_for_empty_values(data):
         return False
     return True
+
+
+def validate_create_record_form(form_data): 
+    errors = {}
+    if not is_contains_only_alphabetic_chars(form_data.get("requestor_name")): 
+        errors["requestor_name"] = "Please enter a valid full name. It should only contain alphabetic characters"
+    if not is_valid_email_pattern(form_data.get("requestor_email")):
+        errors["requestor_email"] = "Please enter a valid email address"
+    return errors
