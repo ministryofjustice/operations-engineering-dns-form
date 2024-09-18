@@ -1,5 +1,6 @@
-from flask import Blueprint, current_app, redirect, render_template, request
+from flask import Blueprint, current_app, flash, redirect, render_template, request
 from slack_sdk.errors import SlackApiError
+from app.main.validators.index import validate_create_record_form
 
 main = Blueprint("main", __name__)
 
@@ -19,8 +20,15 @@ def select_change_type():
 
 @main.route("/create-record", methods=["GET", "POST"])
 def create_record():
+    
     if request.method == "POST":
         form_data = request.form.to_dict()
+
+        errors = validate_create_record_form(form_data)
+        if errors:
+            for field, error_message in errors.items():
+                flash(error_message, f"error_{field}")
+            return render_template("pages/create_record_form.html")
 
         full_dns_record = form_data["dns_record"]
         record_name, domain_name = full_dns_record.split(".", 1)
