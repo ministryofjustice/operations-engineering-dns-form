@@ -42,9 +42,9 @@ def validate_request(data):
     return True
 
 
-def validate_create_record_form(form_data): 
+def validate_create_record_form(form_data):
     errors = {}
-    if not is_contains_only_alphabetic_chars(form_data.get("requestor_name")): 
+    if not is_contains_only_alphabetic_chars(form_data.get("requestor_name")):
         errors["requestor_name"] = "Please enter a valid full name. It should only contain alphabetic characters"
     if not is_valid_email_pattern(form_data.get("requestor_email")):
         errors["requestor_email"] = "Please enter a valid email address"

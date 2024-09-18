@@ -20,7 +20,7 @@ def select_change_type():
 
 @main.route("/create-record", methods=["GET", "POST"])
 def create_record():
-    
+
     if request.method == "POST":
         form_data = request.form.to_dict()
 
