@@ -6,6 +6,11 @@ main = Blueprint("main", __name__)
 
 @main.route("/")
 def index():
+    return render_template("pages/welcome_page.html")
+
+
+@main.route("/main-form")
+def main_form_page():
     return render_template("pages/main_form.html")
 
 

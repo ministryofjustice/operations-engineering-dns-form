@@ -1,0 +1,42 @@
+{% from "govuk_frontend_jinja/components/button/macro.html" import govukButton %}
+{% from "govuk_frontend_jinja/components/inset-text/macro.html" import govukInsetText %}
+
+{% extends "components/base.html" %}
+
+
+{% block pageTitle %}
+   Request a DNS Change - Ministry of Justice
+{% endblock %}
+
+{% block content %}
+{{ super() }}
+
+<h1 class="govuk-heading-xl">Getting Started</h1>
+
+<p class="govuk-body">
+  Use this service to request a new DNS record in an existing Hosted Zone. Before you begin, please read the following information carefully to understand the process and the current constraints.
+</p>
+
+<h2 class="govuk-heading-l">What you need to know</h2>
+
+<p class="govuk-body">
+  <ul class="govuk-list govuk-list--bullet">
+    <li>All DNS requests must comply with our <a href="https://user-guide.operations-engineering.service.justice.gov.uk/documentation/services/domainmgt.html" class="govuk-link">DNS standards and guidelines</a>.
+    <li>Please ensure you have the necessary information ready before proceeding, including the DNS record name, the MoJ Service Owner name and the type of DNS record you wish to create.</li>
+  </ul>
+</p>
+
+<p class="govuk-body">
+  {{ govukInsetText({
+    'html': "Currently, this form only supports creating new NS, A, MX, CNAME, and TXT DNS records.
+    If you need to request a new Hosted Zone or change an existing record, please contact the domains team at <a href='mailto:domains@service.justice.gov.uk' class='govuk-link'>domains@service.justice.gov.uk</a>."
+  }) }}
+</p>
+
+{{ govukButton({
+    'text': "Start now",
+    'href': url_for('main.main_form_page'),
+    'classes': "govuk-button--start"
+}) }}
+
+{% endblock %}
