@@ -85,7 +85,20 @@ will help us to improve it.' }) }} {% endif %} {% endblock %} {% block pageTitle
 <script>
   window.GOVUKFrontend.initAll();
 </script>
-{% endblock bodyEnd %} {% block content %} {% with messages =
-get_flashed_messages() %} {% if messages %} {% for message in messages %} {{
-govukErrorSummary({ 'titleText': "There is a problem", 'errorList': [{ 'text':
-message}] }) }} {% endfor %} {% endif %} {% endwith %} {% endblock %}
+{% endblock bodyEnd %}
+{% block content %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% set error_list = [] %}
+      {% for message in messages %}
+        {% set error_dict = {'text': message} %}
+        {% set _ = error_list.append(error_dict) %}
+      {% endfor %}
+      {{ govukErrorSummary({
+        'titleText': "Form Submission Failed. Please correct the following errors:",
+        'errorList': error_list
+      }) }}
+    {% endif %}
+  {% endwith %}
+{% endblock %}
+
