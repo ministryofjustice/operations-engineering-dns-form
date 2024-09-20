@@ -1,3 +1,5 @@
+# pylint: disable=C0411
+
 from flask import Blueprint, current_app, flash, redirect, render_template, request
 from slack_sdk.errors import SlackApiError
 
