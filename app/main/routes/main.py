@@ -9,11 +9,6 @@ def index():
     return render_template("pages/welcome_page.html")
 
 
-@main.route("/main-form")
-def main_form_page():
-    return render_template("pages/main_form.html")
-
-
 @main.route("/select-change-type", methods=["POST"])
 def select_change_type():
     change_type = request.form["change_type"]
