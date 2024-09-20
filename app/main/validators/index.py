@@ -1,7 +1,5 @@
 import re
 
-from flask import flash
-
 
 def is_contains_only_alphabetic_chars(value):
     pattern = r"^[A-Za-z\s]+$"
@@ -15,6 +13,7 @@ def is_valid_email_pattern(email):
     regex = re.compile(pattern)
     result = regex.fullmatch(email)
     return result is not None
+
 
 def is_empty(value):
     return value is None or value.strip() == ""

@@ -1,5 +1,6 @@
 from flask import Blueprint, current_app, flash, redirect, render_template, request
 from slack_sdk.errors import SlackApiError
+
 from app.main.validators.index import validate_create_record_form
 
 main = Blueprint("main", __name__)
