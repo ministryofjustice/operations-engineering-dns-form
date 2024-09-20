@@ -26,7 +26,12 @@
     },
     'classes': "govuk-!-width-full",
     'id': "requestor_name",
-    'name': "requestor_name"
+    'name': "requestor_name",
+    'value': form_data.get('requestor_name', '') if form_data else '',
+    'errorMessage': errors.get('requestor_name') and {
+      'text': errors['requestor_name']
+    } if errors else ''
+
   }) }}
 
   {{ govukInput({
@@ -38,7 +43,11 @@
     },
     'classes': "govuk-!-width-full",
     'id': "requestor_email",
-    'name': "requestor_email"
+    'name': "requestor_email",
+    'value': form_data.get('requestor_email', '') if form_data else '',
+    'errorMessage': errors.get('requestor_email') and {
+      'text': errors['requestor_email']
+    } if errors else ''
   }) }}
 
   {{ govukInput({
@@ -74,7 +83,11 @@
     },
     'classes': "govuk-!-width-full",
     'id': "dns_record",
-    'name': "dns_record"
+    'name': "dns_record",
+    'value': form_data.get('dns_record', '') if form_data else '',
+    'errorMessage': errors.get('dns_record') and {
+      'text': errors['dns_record']
+    } if errors else ''
   }) }}
 
   {{ govukInput({
