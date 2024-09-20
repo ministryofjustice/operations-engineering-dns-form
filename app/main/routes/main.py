@@ -23,12 +23,11 @@ def create_record():
 
     if request.method == "POST":
         form_data = request.form.to_dict()
-
         errors = validate_create_record_form(form_data)
         if errors:
             for field, error_message in errors.items():
-                flash(error_message, f"error_{field}")
-            return render_template("pages/create_record_form.html")
+                flash((field, error_message), "form_error")
+            return render_template("pages/create_record_form.html", form_data=form_data, errors=errors)
 
         full_dns_record = form_data["dns_record"]
         record_name, domain_name = full_dns_record.split(".", 1)
