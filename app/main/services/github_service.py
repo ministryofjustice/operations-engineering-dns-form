@@ -3,6 +3,9 @@ import logging
 import yaml
 from github import Github
 from github.GithubException import GithubException
+from gql import Client, gql
+from gql.transport.aiohttp import AIOHTTPTransport
+from gql.transport.exceptions import TransportQueryError
 
 logger = logging.getLogger(__name__)
 
@@ -10,17 +13,82 @@ logger = logging.getLogger(__name__)
 # pylint: disable=R0903, R0914
 class GithubService:
     def __init__(
-        self, org_token: str, issues_repository: str, pull_request_repository: str
+        self,
+        org_token: str,
+        issues_repository: str,
+        pull_request_repository: str,
+        project_repository: str,
     ) -> None:
         self.issues_repository = issues_repository
         self.pull_request_repository = pull_request_repository
         self.github_client_core_api: Github = Github(org_token)
         self.issues_repo = self.github_client_core_api.get_repo(issues_repository)
+        self.project_repo = self.github_client_core_api.get_repo(project_repository)
         self.pr_repo = self.github_client_core_api.get_repo(pull_request_repository)
+        self.github_client_gql_api: Client = Client(
+            transport=AIOHTTPTransport(
+                url="https://api.github.com/graphql",
+                headers={"Authorization": f"Bearer {org_token}"},
+            ),
+            execute_timeout=120,
+        )
 
-    def submit_issue(self, form_data: dict) -> int:
+    def add_issue_to_project_board(self, issue_link: str) -> None:
+        # Add a field to an issue that adds it to our sprint
+        issue_number = issue_link.split("/")[-1]
+        add_field_to_issue(issue_number, "52")
+
+    # It should look a bit like this:
+    # gh api graphql -f query='
+    # mutation {
+    #   updateProjectV2ItemFieldValue(
+    #     input: {
+    #       projectId: "PROJECT_ID"
+    #       itemId: "ITEM_ID"
+    #       fieldId: "FIELD_ID"
+    #       value: {
+    #         singleSelectOptionId: "OPTION_ID"
+    #       }
+    #     }
+    #   ) {
+    #     projectV2Item {
+    #       id
+    #     }
+    #   }
+    # }'
+    def add_field_to_issue(
+        self, project_id: str, issue_id: str, field_id: str, option_id: str
+    ) -> None:
+        return self.github_client_gql_api.execute(
+            gql(
+                """
+                query($organisation_name: String!, $page_size: Int!, $after_cursor: String) {
+                    mutation {
+                        updateProjectV2ItemFieldValue(
+                            input: 
+                                {
+                                    projectId: $project_id,
+                                    itemId: $issue_id, 
+                                    fieldId: $field_id
+                                    value: {
+                                        singleSelectOptionId: $option_id
+                                    }
+                                }
+                        ) 
+                    }
+                }
+                """
+            ),
+            variable_values={
+                "organisation_name": self.organisation_name,
+                "page_size": page_size,
+                "after_cursor": after_cursor,
+            },
+        )
+
+    def submit_issue(self, form_data: dict) -> str:
         title = f"[DNS] Add record for {form_data['domain_name']}"
-        if form_data['deploy_time'] == 'specific_date':
+        if form_data["deploy_time"] == "specific_date":
             change_date = f"{form_data['change_date-day']}/{form_data['change_date-month']}/{form_data['change_date-year']}"
         else:
             change_date = "ASAP"
@@ -60,7 +128,9 @@ class GithubService:
 
         try:
             issue = self.issues_repo.create_issue(title=title, body=body, labels=labels)
-            issue_link = f"https://github.com/{self.issues_repository}/issues/{issue.number}"
+            issue_link = (
+                f"https://github.com/{self.issues_repository}/issues/{issue.number}"
+            )
             logger.info("Issue created: %s", title)
             return issue_link
         except GithubException as e:
