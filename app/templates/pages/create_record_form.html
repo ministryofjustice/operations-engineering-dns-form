@@ -349,12 +349,13 @@
     }
 
     function dnsRecordAutocmplete() {
-      const query = dnsRecordInput.value;
+      const query = dnsRecord.value;
 
       if (query.length >= 2) {
         fetch(`/dns-record-autocomplete?q=${encodeURIComponent(query)}`)
           .then(response => {
             if (!response.ok) {
+              print(response)
               throw new Error('Domain name autocomplete failed');
             }
             
@@ -373,7 +374,7 @@
             });
 
             document.body.appendChild(dataList);
-            dnsRecordInput.setAttribute('list', 'dns_record_suggestions');
+            dnsRecord.setAttribute('list', 'dns_record_suggestions');
           })
           .catch(error => {
             console.error('Error fetching autocomplete suggestions:', error);
@@ -386,12 +387,13 @@
 
     recordType.addEventListener('change', toggleRecordValueContainer);
     dateSelection.addEventListener('change', toggleDateSelectionContainer);
-    dnsRecord.addEventListener('change', dnsRecordAutocmplete)
+    dnsRecord.addEventListener('input', dnsRecordAutocmplete)
 
 
     // Initialise the form with the correct containers displayed
     toggleRecordValueContainer();
     toggleDateSelectionContainer();
+    dnsRecordAutocmplete();
   });
 </script>
 
