@@ -2,6 +2,7 @@ import os
 import yaml
 import git
 import logging
+import shutil
 
 logger = logging.getLogger(__name__)
 
@@ -13,33 +14,44 @@ class DNSService:
         repo_url = "https://github.com/ministryofjustice/dns.git"
 
         try:
-            git.Repo.clone_from(repo_url, '.')
+            git.Repo.clone_from(repo_url, 'dns')
             logger.info("Octodns repository cloned successfully!")
         except Exception as e:
             logger.info("Error cloning octodns repository: %s", e)
 
-    def get_fqdn_from_zone(self, file):
-        fqdns = []
+    def get_fqdns_from_zone(self, file, hz):
         zone_data = yaml.safe_load(file)
+        records = zone_data.keys()
+        fqdns = []
 
-        for record in zone_data.get('records', []):
-            fqdn = record.get('fqdn', None)
-            if fqdn:
-                fqdns.append(fqdn)
+        for record in records:
+            if record != "":
+                fqdns.append(record + "." + hz)
+            else: 
+                fqdns.append(hz)
 
         return fqdns
 
     def get_all_fqdns_from_zones(self):
         fqdns = []
-        
-        for filename in os.listdir("./dns/hostedzones"):
+        dir = "dns/hostedzones"
+
+        for filename in os.listdir(dir):
             if filename.endswith('.yaml'):
                 with open(os.path.join(dir, filename), 'r') as file:
-                    fqdns = fqdns + self.get_fqdn_from_zone(file)
+                    hz = filename.removesuffix(".yaml")
+                    fqdns = fqdns + self.get_fqdns_from_zone(file, hz)
         
         return fqdns
+    
+    def cleanup(self):
+        shutil.rmtree("dns")
 
     def get_all_domains(self):
         self.clone_octodns_repo()
 
-        return self.get_all_fqdns_from_zones()
+        domains = self.get_all_fqdns_from_zones()
+
+        self.cleanup()
+
+        return domains
