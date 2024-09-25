@@ -19,11 +19,9 @@ def select_change_type():
         return redirect("/create-record")
     return redirect("/")
 
-@main.route("/dns-record-autocomplete", methods=["GET"])
+@main.route("/get-all-dns-records", methods=["GET"])
 def dns_record_autocomplete():
-    query = request.args.get('q', '').lower()
-    suggestions = [fqdn for fqdn in current_app.domains if fqdn.lower().startswith(query)]
-    return jsonify(suggestions)
+    return jsonify(current_app.domains)
 
 @main.route("/create-record", methods=["GET", "POST"])
 def create_record():
