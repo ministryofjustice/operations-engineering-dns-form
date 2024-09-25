@@ -13,11 +13,12 @@ from app.main.config.routes_config import configure_routes
 from app.main.config.sentry_config import configure_sentry
 from app.main.services.github_service import GithubService
 from app.main.services.slack_service import SlackService
+from app.main.services.dns_service import DNSService
 
 logger = logging.getLogger(__name__)
 
 
-def create_app(github_service=None, slack_service=None, is_rate_limit_enabled=True) -> Flask:
+def create_app(github_service=None, slack_service=None, dns_service=None, is_rate_limit_enabled=True) -> Flask:
     if github_service is None:
         github_service = GithubService(
             app_config.github.token,
@@ -28,6 +29,8 @@ def create_app(github_service=None, slack_service=None, is_rate_limit_enabled=Tr
         slack_service = SlackService(
             app_config.slack.token
         )
+    if dns_service is None: 
+        dns_service = DNSService()
 
     configure_logging(app_config.logging_level)
 
@@ -38,6 +41,7 @@ def create_app(github_service=None, slack_service=None, is_rate_limit_enabled=Tr
     app.secret_key = app_config.flask.app_secret_key
     app.github_service = github_service
     app.slack_service = slack_service
+    app.dns_service = dns_service
 
     configure_routes(app)
     configure_error_handlers(app)
