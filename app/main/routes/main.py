@@ -21,14 +21,15 @@ def select_change_type():
 
 @main.route("/get-all-dns-records", methods=["GET"])
 def dns_record_autocomplete():
-    return jsonify(current_app.domains)
+    return jsonify(current_app.dns_service.get_all_domains())
 
 @main.route("/create-record", methods=["GET", "POST"])
 def create_record():
 
     if request.method == "POST":
         form_data = request.form.to_dict()
-        errors = validate_create_record_form(form_data)
+        hosted_zones = current_app.dns_service.get_all_hzs()
+        errors = validate_create_record_form(form_data, hosted_zones)
         if errors:
             for field, error_message in errors.items():
                 flash((field, error_message), "form_error")
