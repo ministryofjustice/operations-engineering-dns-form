@@ -41,7 +41,8 @@ def create_app(github_service=None, slack_service=None, dns_service=None, is_rat
     app.secret_key = app_config.flask.app_secret_key
     app.github_service = github_service
     app.slack_service = slack_service
-    app.dns_service = dns_service
+
+    app.domains = dns_service.get_all_domains()
 
     configure_routes(app)
     configure_error_handlers(app)

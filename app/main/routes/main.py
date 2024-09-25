@@ -7,8 +7,6 @@ from app.main.validators.index import validate_create_record_form
 
 main = Blueprint("main", __name__)
 
-domains = current_app.dns_service.get_all_domains()
-
 @main.route("/")
 def index():
     return render_template("pages/welcome_page.html")
@@ -24,7 +22,7 @@ def select_change_type():
 @main.route("/dns-record-autocomplete", methods=["GET"])
 def dns_record_autocomplete():
     query = request.args.get('q', '').lower()
-    suggestions = [fqdn for fqdn in domains if fqdn.lower().startswith(query)]
+    suggestions = [fqdn for fqdn in current_app.domains if fqdn.lower().startswith(query)]
     return jsonify(suggestions)
 
 @main.route("/create-record", methods=["GET", "POST"])
