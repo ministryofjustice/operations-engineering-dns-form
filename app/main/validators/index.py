@@ -18,7 +18,7 @@ def is_empty(value):
     return value is None or value.strip() == ""
 
 
-def validate_create_record_form(form_data, hosted_zones):
+def validate_create_record_form(form_data):
     errors = {}
 
     if not is_contains_only_alphabetic_chars(form_data.get("requestor_name")):
@@ -26,6 +26,6 @@ def validate_create_record_form(form_data, hosted_zones):
     if not is_valid_email_pattern(form_data.get("requestor_email")):
         errors["requestor_email"] = "Please enter a valid email address"
     if is_empty(form_data.get("dns_record")):
-        errors["dns_record"] = "Please enter a domain name"
+        errors["dns_record"] = "Please enter a valid DNS record"
         
     return errors
