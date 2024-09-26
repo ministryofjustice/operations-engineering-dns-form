@@ -31,7 +31,8 @@ class TestGithubService(unittest.TestCase):
             "record_name": "test",
             "record_type": "a",
             "a_value": "192.0.2.1",
-            "deploy_time": "ASAP"
+            "deploy_time": "ASAP",
+            "further_info": "Some more details"
         }
 
     def tearDown(self):
@@ -58,6 +59,7 @@ class TestGithubService(unittest.TestCase):
                 "**DNS Record Type:** a\n\n"
                 "**A Record Value:** 192.0.2.1\n\n"
                 "**Change Date:** ASAP\n\n"
+                "**Further Information:** Some more details\n\n"
             ),
             labels=["dns-request", "add-record-request"],
         )
@@ -82,6 +84,8 @@ class TestGithubService(unittest.TestCase):
                 "**DNS Record Type:** a\n\n"
                 "**A Record Value:** 192.0.2.1\n\n"
                 "**Change Date:** ASAP\n\n"
+                "**Further Information:** Some more details\n\n"
+
             ),
             labels=["dns-request", "add-record-request"],
         )

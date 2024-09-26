@@ -4,15 +4,30 @@
     Create New DNS Record
 {% endblock %}
 
+{% block beforeContent %}
+{{ super() }}
+{{ govukBackLink ({
+'text': 'Back',
+'href': '/'
+}) }}
+{% endblock %}
+
 {% block content %}
 {{ super() }}
 
-<h1 class="govuk-heading-xl">Create a New DNS Record</h1>
+<h1 class="govuk-heading-xl">Create or Change a DNS Record</h1>
+
+<p class="govuk-body">
+  Please complete this form to the best of your ability. Use the "Further information" free text box 
+  at the bottom of the page to provide any additional details or if you are unsure which of the optional 
+  fields to use. We will contact you if necessary.
+</p>
 
 <form action="/create-record" method="POST">
   {{ govukInput({
     'label': {
-      'text': "Requestor Name"
+      'text': "Requestor Name",
+      'classes': "govuk-label--m"
     },
     'hint': {
         'text': 'Enter your full name'
@@ -29,7 +44,8 @@
 
   {{ govukInput({
     'label': {
-      'text': "Requestor Email"
+      'text': "Requestor Email",
+      'classes': "govuk-label--m"
     },
     'hint': {
         'text': 'Enter your email address'
@@ -37,6 +53,7 @@
     'classes': "govuk-!-width-full",
     'id': "requestor_email",
     'name': "requestor_email",
+    'type': "email",
     'value': form_data.get('requestor_email', '') if form_data else '',
     'errorMessage': errors.get('requestor_email') and {
       'text': errors['requestor_email']
@@ -45,7 +62,7 @@
 
   {{ govukInput({
     'label': {
-      'text': "MoJ Service Owner"
+      'text': "MoJ Service Owner (optional)"
     },
     'hint': {
         'text': 'Enter the name of the MoJ Service Owner'
@@ -57,7 +74,7 @@
 
   {{ govukInput({
     'label': {
-      'text': "Service Area Name"
+      'text': "Service Area Name (optional)"
     },
     'hint': {
         'text': 'Enter the name of the Service Area'
@@ -69,7 +86,7 @@
 
   {{ govukInput({
     'label': {
-      'text': "DNS Record"
+      'text': "DNS Record (optional)"
     },
     'hint': {
         'text': 'Enter the full DNS record (e.g., example-record.courtfinder.service.gov.uk)'
@@ -85,7 +102,7 @@
 
   {{ govukInput({
     'label': {
-      'text': "TTL (Time to Live)"
+      'text': "TTL (Time to Live) (optional)"
     },
     'hint': {
         'text': 'Enter the TTL value for the record'
@@ -99,7 +116,7 @@
     'id': "record_type",
     'name': "record_type",
     'label': {
-      'text': "DNS Record Type"
+      'text': "DNS Record Type (optional)"
     },
     'hint': {
         'text': 'Select the type of DNS record required'
@@ -145,7 +162,8 @@
       },
       'hint': {
           'text': 'Enter the name servers, separated by commas'
-      }
+      },
+      'rows': "2"
     }) }}
   </div>
 
@@ -254,7 +272,7 @@
     'id': "deploy_time",
     'name': "deploy_time",
     'label': {
-      'text': "Select a Date for Your Change"
+      'text': "Select a Date for Your Change (optional)"
     },
     'hint': {
         'text': 'For example, 21/09/2024'
@@ -283,14 +301,16 @@
     }) }}
   </div>
 
-  {{ govukTextarea({
-    'name': "furtherInfo",
-    'id': "further-info",
+  {{ govukCharacterCount({
+    'name': "further_info",
+    'id': "further_info",
+    'maxwords': 200,
     'label': {
-      'text': "Further information"
+      'text': "Further information",
+      'classes': "govuk-label--m"
     },
     'hint': {
-        'text': 'Please provide any further information required to help us complete your request.'
+        'text': 'Please provide any further information required to help us complete your request'
     }
   }) }}
 
