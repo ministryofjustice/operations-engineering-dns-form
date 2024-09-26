@@ -22,8 +22,7 @@ class Auth0_Service:
             client_kwargs={
                 "scope": "openid profile email",
             },
-            server_metadata_url=f"https://{
-                domain}/.well-known/openid-configuration",
+            server_metadata_url=f"https://{domain}/.well-known/openid-configuration",
         )
 
     def login(self, redirect_uri: str) -> Any:
