@@ -1,18 +1,20 @@
 <!doctype html>
 {% from 'govuk_frontend_jinja/components/input/macro.html' import govukInput %}
-{% from 'govuk_frontend_jinja/components/button/macro.html' import govukButton
-%} {% from 'govuk_frontend_jinja/components/checkboxes/macro.html' import
-govukCheckboxes %} {% from
-'govuk_frontend_jinja/components/error-message/macro.html' import
-govukErrorMessage %} {% from
-'govuk_frontend_jinja/components/error-summary/macro.html' import
-govukErrorSummary %} {% from
-'govuk_frontend_jinja/components/back-link/macro.html' import govukBackLink %}
-{% from 'govuk_frontend_jinja/components/footer/macro.html' import govukFooter
-%} {% from 'govuk_frontend_jinja/components/phase-banner/macro.html' import
-govukPhaseBanner %} {% from 'govuk_frontend_jinja/components/panel/macro.html'
-import govukPanel %} {% extends 'govuk_frontend_jinja/template.html' %} {% block
-head %}
+{% from 'govuk_frontend_jinja/components/button/macro.html' import govukButton %}
+{% from "govuk_frontend_jinja/components/textarea/macro.html" import govukTextarea %}
+{% from 'govuk_frontend_jinja/components/checkboxes/macro.html' import govukCheckboxes %}
+{% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect %}
+{% from "govuk_frontend_jinja/components/date-input/macro.html" import govukDateInput %}
+{% from "govuk_frontend_jinja/components/inset-text/macro.html" import govukInsetText %}
+{% from 'govuk_frontend_jinja/components/error-message/macro.html' import govukErrorMessage %}
+{% from 'govuk_frontend_jinja/components/error-summary/macro.html' import govukErrorSummary %}
+{% from 'govuk_frontend_jinja/components/back-link/macro.html' import govukBackLink %}
+{% from 'govuk_frontend_jinja/components/footer/macro.html' import govukFooter %}
+{% from 'govuk_frontend_jinja/components/phase-banner/macro.html' import govukPhaseBanner %}
+{% from 'govuk_frontend_jinja/components/panel/macro.html' import govukPanel %}
+{% extends 'govuk_frontend_jinja/template.html' %}
+
+{% block head %}
 <title>Create or change a DNS entry</title>
 <!-- Manually set the govuk frontend version in line below and bottom of this file -->
 <link
