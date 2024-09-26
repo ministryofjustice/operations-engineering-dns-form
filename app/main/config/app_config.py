@@ -15,10 +15,11 @@ app_config = SimpleNamespace(
     github=SimpleNamespace(
         issues_repository="ministryofjustice/operations-engineering-dns-issues",
         pull_request_repository="ministryofjustice/dns",
-        project_repository="ministryofjustice/operations-engineering",
         token=__get_env_var("ADMIN_GITHUB_TOKEN"),
     ),
-    slack=SimpleNamespace(token=__get_env_var("ADMIN_SLACK_TOKEN")),
+    slack=SimpleNamespace(
+        token=__get_env_var("ADMIN_SLACK_TOKEN")
+    ),
     flask=SimpleNamespace(
         app_secret_key=__get_env_var("APP_SECRET_KEY"),
     ),

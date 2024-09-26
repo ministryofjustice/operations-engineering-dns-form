@@ -18,18 +18,17 @@ from app.main.services.slack_service import SlackService
 logger = logging.getLogger(__name__)
 
 
-def create_app(
-    github_service=None, slack_service=None, is_rate_limit_enabled=True
-) -> Flask:
+def create_app(github_service=None, slack_service=None, is_rate_limit_enabled=True) -> Flask:
     if github_service is None:
         github_service = GithubService(
             app_config.github.token,
             app_config.github.issues_repository,
             app_config.github.pull_request_repository,
-            app_config.github.project_repository,
         )
     if slack_service is None:
-        slack_service = SlackService(app_config.slack.token)
+        slack_service = SlackService(
+            app_config.slack.token
+        )
 
     configure_logging(app_config.logging_level)
 
