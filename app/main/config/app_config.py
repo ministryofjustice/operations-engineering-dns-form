@@ -7,6 +7,11 @@ def __get_env_var(name: str) -> str | None:
 
 
 app_config = SimpleNamespace(
+    auth0=SimpleNamespace(
+        domain=__get_env_var("AUTH0_DOMAIN"),
+        client_id=__get_env_var("AUTH0_CLIENT_ID"),
+        client_secret=__get_env_var("AUTH0_CLIENT_SECRET"),
+    ),
     github=SimpleNamespace(
         issues_repository="ministryofjustice/operations-engineering-dns-issues",
         pull_request_repository="ministryofjustice/dns",

@@ -2,7 +2,7 @@
 
 
 {% block pageTitle %}
-   Request a DNS Change - Ministry of Justice
+Request a DNS Change - Ministry of Justice
 {% endblock %}
 
 {% block content %}
@@ -11,24 +11,32 @@
 <h1 class="govuk-heading-xl">Getting Started</h1>
 
 <p class="govuk-body">
-  This service is used for requesting DNS changes. Before you begin, please read the following information carefully to understand the process and the current constraints.
+  This service is used for requesting DNS changes. Before you begin, please read the following information carefully to
+  understand the process and the current constraints.
 </p>
 
 <h2 class="govuk-heading-l">What you need to know</h2>
 
 <p class="govuk-body">
-  <ul class="govuk-list govuk-list--bullet">
-    <li>You will need either a @justice.gov.uk or @digital.justice.gov.uk email in order to authenticate on the next page.</li>
-    <li>All DNS requests must comply with our <a href="https://user-guide.operations-engineering.service.justice.gov.uk/documentation/services/domainmgt.html" class="govuk-link">DNS standards and guidelines</a>.
-    <li>If you are creating or modifying an existing record, please ensure you know the DNS record name and details of the new record value.</li>
-    <li>If you are requesting a different type of DNS change, for example registering a new domain, please ensure you include as much information about the request as possible in the provided text field.</li>
-  </ul>
+<ul class="govuk-list govuk-list--bullet">
+  <li>You will need either a @justice.gov.uk or @digital.justice.gov.uk email in order to authenticate on the next page.
+  </li>
+  <li>All DNS requests must comply with our <a
+      href="https://user-guide.operations-engineering.service.justice.gov.uk/documentation/services/domainmgt.html"
+      class="govuk-link">DNS standards and guidelines</a>.
+  <li>If you are creating or modifying an existing record, please ensure you know the DNS record name and details of the
+    new record value.</li>
+  <li>If you are requesting a different type of DNS change, for example registering a new domain, please ensure you
+    include as much information about the request as possible in the provided text field.</li>
+</ul>
 </p>
 
-{{ govukButton({
-    'text': "Start now",
-    'href': url_for('main.create_record'),
-    'classes': "govuk-button--start"
-}) }}
+<form action="/auth/login" method="get">
+  {{ govukButton({
+  'text': "Start now",
+  'href': url_for('main.create_record'),
+  'classes': "govuk-button--start"
+  }) }}
+</form>
 
 {% endblock %}
