@@ -28,8 +28,7 @@ def create_record():
 
     if request.method == "POST":
         form_data = request.form.to_dict()
-        hosted_zones = current_app.dns_service.get_all_hzs()
-        errors = validate_create_record_form(form_data, hosted_zones)
+        errors = validate_create_record_form(form_data)
         if errors:
             for field, error_message in errors.items():
                 flash((field, error_message), "form_error")

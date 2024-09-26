@@ -4,8 +4,6 @@ import git
 import logging
 import shutil
 
-from app.main.config.cache_config import cache
-
 logger = logging.getLogger(__name__)
 
 class DNSService:
@@ -54,7 +52,6 @@ class DNSService:
         if os.path.isdir(self.hz_dir):
             shutil.rmtree(self.dns_repo_dir)
 
-    @cache.cached()
     def get_all_domains(self):
         self.clone_octodns_repo()
 
@@ -63,13 +60,3 @@ class DNSService:
         self.cleanup()
 
         return domains
-    
-    @cache.cached()
-    def get_all_hzs(self):
-        self.clone_octodns_repo()
-
-        hzs = [filename.removesuffix(".yaml") for filename in os.listdir(self.hz_dir) if filename.endswith('.yaml')]
-
-        self.cleanup()
-
-        return hzs
