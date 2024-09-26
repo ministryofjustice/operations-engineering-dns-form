@@ -54,6 +54,7 @@ class GithubService:
             )
 
         body += f"**Change Date:** {change_date}\n\n"
+        body += f"**Further Information:** {form_data['further_info']}\n\n"
 
         labels = ["dns-request", "add-record-request"]
 
