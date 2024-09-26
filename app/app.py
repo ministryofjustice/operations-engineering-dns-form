@@ -11,6 +11,7 @@ from app.main.config.limiter_config import configure_limiter
 from app.main.config.logging_config import configure_logging
 from app.main.config.routes_config import configure_routes
 from app.main.config.sentry_config import configure_sentry
+from app.main.config.cache_config import configure_cache
 from app.main.services.github_service import GithubService
 from app.main.services.slack_service import SlackService
 from app.main.services.dns_service import DNSService
@@ -49,6 +50,7 @@ def create_app(github_service=None, slack_service=None, dns_service=None, is_rat
     configure_limiter(app, is_rate_limit_enabled)
     configure_jinja(app)
     configure_cors(app)
+    configure_cache('SimpleCache', 300, app)
 
     logger.info("Running app...")
 
