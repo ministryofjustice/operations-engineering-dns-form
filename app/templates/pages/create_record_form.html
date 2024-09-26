@@ -299,6 +299,7 @@
   document.addEventListener('DOMContentLoaded', function() {
     var recordType = document.getElementById('record_type');
     var dateSelection = document.getElementById('deploy_time');
+    var dnsRecord = document.getElementById('dns_record');
 
     var dateSelectionContainer = document.getElementById('dateSelectionContainer');
     var nsValuesContainer = document.getElementById('nsValuesContainer');
@@ -307,6 +308,8 @@
     var cnameValueContainer = document.getElementById('cnameValueContainer');
     var txtValueContainer = document.getElementById('txtValueContainer');
     var aliasValuesContainer = document.getElementById('aliasValuesContainer');
+
+    var domains = []
 
     function toggleRecordValueContainer() {
       nsValuesContainer.style.display = 'none';
@@ -339,11 +342,53 @@
       }
     }
 
+    function load_domains() {
+      fetch("/get-all-dns-records")
+        .then(response => response.json())
+        .then(data => domains = data)
+        .catch(error => console.error('Faild to load domains:', error));
+    }
+
+    function clearSuggestions() {
+        const existingDataList = document.getElementById('dns_record_suggestions');
+
+        if (existingDataList) {
+            existingDataList.remove();
+        }
+    }
+
+    function dnsRecordAutocmplete() {
+      const query = dnsRecord.value;
+
+      if (query.length >= 2) {
+        clearSuggestions();
+
+        matched_domains = domains.filter(domain => domain.toLowerCase().startsWith(query));
+
+        const dataList = document.createElement('dataList');
+        dataList.id = 'dns_record_suggestions';
+
+        matched_domains.forEach(domain => {
+          const option = document.createElement('option');
+          option.value = domain;
+          dataList.appendChild(option);
+        });
+
+        document.body.appendChild(dataList);
+        dnsRecord.setAttribute('list', 'dns_record_suggestions');
+      } 
+      else {
+        clearSuggestions();
+      }
+    }
+
     recordType.addEventListener('change', toggleRecordValueContainer);
     dateSelection.addEventListener('change', toggleDateSelectionContainer);
+    dnsRecord.addEventListener('input', dnsRecordAutocmplete)
 
 
     // Initialise the form with the correct containers displayed
+    load_domains();
     toggleRecordValueContainer();
     toggleDateSelectionContainer();
   });
