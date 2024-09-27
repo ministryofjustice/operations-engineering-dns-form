@@ -31,4 +31,4 @@ def logout():
 @auth_route.route("/callback", methods=["GET", "POST"])
 def callback():
     session["user"] = auth0_service.get_access_token()
-    return redirect("/join/send-invitation")
+    return redirect("/main/create-record")
