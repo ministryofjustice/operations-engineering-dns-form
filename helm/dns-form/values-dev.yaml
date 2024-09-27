@@ -5,6 +5,7 @@ app:
   deployment:
     replicaCount: 1
     env:
+      AUTH0_DOMAIN: "operations-engineering.eu.auth0.com"
       SENTRY_ENV: "development"
       FLASK_DEBUG: true
       PHASE_BANNER_TEXT: "DEV"
