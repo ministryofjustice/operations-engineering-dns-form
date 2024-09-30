@@ -67,6 +67,8 @@ jobs:
             --timeout 10m \
             --namespace "${KUBE_NAMESPACE}" \
             --values=helm/dns-form/values-dev.yaml \
+            --set app.deployment.env.AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID} \
+            --set app.deployment.env.AUTH0_CLIENT_SECRET=${AUTH0_CLIENT_SECRET} \
             --set app.deployment.env.APP_SECRET_KEY="${FLASK_APP_SECRET}" \
             --set app.deployment.env.ADMIN_GITHUB_TOKEN="${ADMIN_GITHUB_TOKEN}" \
             --set app.deployment.env.ADMIN_SLACK_TOKEN="${ADMIN_SLACK_TOKEN}" \
