@@ -69,8 +69,8 @@ class TestSubmitDNSRequest(unittest.TestCase):
         with unittest.mock.patch.object(self.app.logger, "error") as mock_logger:
             response = self.client.post("/create-record", data=self.form_data)
 
-            # Check response is still 200 despite the Slack error
-            self.assertEqual(response.status_code, 200)
+            # Redirect to the auth0 login page
+            self.assertEqual(response.status_code, 302)
             self.assertIn(b"https://github.com/example/pull/1", response.data)
             self.github_service.submit_issue.assert_called_once_with(self.form_data)
             self.github_service.create_pr.assert_called_once_with(
