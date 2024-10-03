@@ -22,8 +22,8 @@ def select_change_type():
     return redirect("/")
 
 
-@requires_auth
 @main.route("/create-record", methods=["GET", "POST"])
+@requires_auth
 def create_record():
 
     if request.method == "POST":
