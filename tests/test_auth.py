@@ -42,7 +42,7 @@ class TestAuthRoutes(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
         with self.client.session_transaction() as session:
             self.assertEqual(session["user"], "The users session! 🤩")
-        self.assertIn("main/create-record", response.headers["Location"])
+        self.assertIn("/create-record", response.headers["Location"])
 
     @patch("app.main.routes.auth.auth0_service")
     def test_logout_route_clears_session_and_redirects(self, mock_auth0_service):
