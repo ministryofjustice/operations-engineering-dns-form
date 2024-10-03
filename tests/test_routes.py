@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
+
 # pylint: disable=C0411
 from slack_sdk.errors import SlackApiError
 
@@ -39,13 +40,15 @@ class TestSubmitDNSRequest(unittest.TestCase):
 
         response = self.client.post("/create-record", data=self.form_data)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(b"https://github.com/example/pull/1", response.data)
         self.github_service.submit_issue.assert_called_once_with(self.form_data)
-        self.github_service.create_pr.assert_called_once_with(self.form_data, issue_link)
+        self.github_service.create_pr.assert_called_once_with(
+            self.form_data, issue_link
+        )
         self.slack_service.send_message_to_plaintext_channel_name.assert_called_once_with(
             message=f"A new DNS user request has been created\nPR: {pr_link}\nIssue: {issue_link}",
-            channel_name="operations-engineering-alerts"
+            channel_name="operations-engineering-alerts",
         )
 
     def test_slack_api_error_handling(self):
@@ -56,24 +59,28 @@ class TestSubmitDNSRequest(unittest.TestCase):
         self.github_service.create_pr.return_value = pr_link
 
         # Simulate SlackApiError being raised
-        self.slack_service.send_message_to_plaintext_channel_name.side_effect = SlackApiError(
-            message="Slack API error",
-            response={"ok": False, "error": "invalid_auth"}
+        self.slack_service.send_message_to_plaintext_channel_name.side_effect = (
+            SlackApiError(
+                message="Slack API error",
+                response={"ok": False, "error": "invalid_auth"},
             )
+        )
 
-        with unittest.mock.patch.object(self.app.logger, 'error') as mock_logger:
+        with unittest.mock.patch.object(self.app.logger, "error") as mock_logger:
             response = self.client.post("/create-record", data=self.form_data)
 
             # Check response is still 200 despite the Slack error
             self.assertEqual(response.status_code, 200)
             self.assertIn(b"https://github.com/example/pull/1", response.data)
             self.github_service.submit_issue.assert_called_once_with(self.form_data)
-            self.github_service.create_pr.assert_called_once_with(self.form_data, issue_link)
+            self.github_service.create_pr.assert_called_once_with(
+                self.form_data, issue_link
+            )
             self.slack_service.send_message_to_plaintext_channel_name.assert_called_once_with(
                 message=f"A new DNS user request has been created\nPR: {pr_link}\nIssue: {issue_link}",
-                channel_name="operations-engineering-alerts"
+                channel_name="operations-engineering-alerts",
             )
 
             mock_logger.assert_called_once_with(
                 "Failed to send new DNS request notification to slack: Slack API error\nThe server responded with: {'ok': False, 'error': 'invalid_auth'}"
-                )
+            )
