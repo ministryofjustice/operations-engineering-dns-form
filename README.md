@@ -10,7 +10,6 @@ Previously, DNS change requests were sent via email, triggering a manual process
 
 - Track DNS change requests in a structured and organized manner.
 - Automate the creation of GitHub issues and pull requests for DNS changes.
-- Provide Slack notifications to keep the team updated.
 - Ensure validation and proper formatting of DNS requests, reducing errors and manual intervention.
 
 ## Features
@@ -18,14 +17,12 @@ Previously, DNS change requests were sent via email, triggering a manual process
 - **Authentication**: Only authenticated users can access the DNS request form.
 - **DNS Request Submission**: Users can submit DNS change requests through a web form.
 - **GitHub Integration**: Automatically creates an issue and pull request for DNS changes in a GitHub repository.
-- **Slack Notifications**: Notifies the Operations Engineering team about new DNS requests via Slack.
 - **Form Validation**: Ensures that DNS records are properly formatted before submission.
 
 ## Prerequisites
 
 - **Python 3.x**
 - **Flask**
-- **Slack SDK** for sending notifications
 - **GitHub Integration** for issue and pull request creation
 - **Authentication**: The app uses a custom authentication middleware, and users must be logged in to submit requests.
 
@@ -44,12 +41,11 @@ Previously, DNS change requests were sent via email, triggering a manual process
    ```
 
 3. **Set up environment variables**:
-   - Configure the necessary environment variables for GitHub integration, Slack API credentials, and authentication. Example `.env` file:
+   - Configure the necessary environment variables for GitHub integration, and authentication. Example `.env` file:
      ```bash
      FLASK_APP=app
      FLASK_ENV=development
      GITHUB_API_TOKEN=your_github_token
-     SLACK_API_TOKEN=your_slack_token
      ```
 
 4. **Run the Flask application**:
@@ -64,7 +60,6 @@ Previously, DNS change requests were sent via email, triggering a manual process
 1. **Login**: Authenticate through the Auth0 configured authentication system.
 2. **Submit DNS Request**: Fill out the DNS request form and submit.
 3. **Issue and PR Creation**: The application will automatically create a GitHub issue and a pull request for the requested DNS changes.
-4. **Slack Notification**: A notification will be sent to the appropriate Slack channel to alert the Operations Engineering team.
 
 ## Running Tests
 

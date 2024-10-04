@@ -1,20 +1,17 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
-# pylint: disable=C0411
-from slack_sdk.errors import SlackApiError
-
 from app.app import create_app
 from app.main.services.github_service import GithubService
-from app.main.services.slack_service import SlackService
+
+# pylint: disable=C0411
 
 
 class TestSubmitDNSRequest(unittest.TestCase):
     def setUp(self):
         self.github_service = MagicMock(GithubService)
-        self.slack_service = MagicMock(SlackService)
         self.logger = MagicMock()
-        self.app = create_app(self.github_service, self.slack_service, False)
+        self.app = create_app(self.github_service, False)
         self.app.config["SECRET_KEY"] = "test_flask"
         self.app.config["WTF_CSRF_ENABLED"] = False
         self.client = self.app.test_client()
@@ -51,24 +48,3 @@ class TestSubmitDNSRequest(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Request #1", response.data)
-
-    @patch("app.main.middleware.auth.requires_auth", return_value=True)
-    def test_slack_api_error_handling(self, mock_auth):
-        self.login_as_user()
-        issue_link = "https://github.com/example/issue/1"
-        self.github_service.submit_issue.return_value = issue_link
-
-        # Simulate SlackApiError being raised
-        self.slack_service.send_message_to_plaintext_channel_name.side_effect = (
-            SlackApiError(
-                message="Slack API error",
-                response={"ok": False, "error": "invalid_auth"},
-            )
-        )
-
-        with patch.object(self.app.logger, "error") as mock_logger:
-            response = self.client.post("/create-record", data=self.form_data)
-            self.assertEqual(response.status_code, 200)
-            mock_logger.assert_called_once_with(
-                "Failed to send new DNS request notification to slack: Slack API error\nThe server responded with: {'ok': False, 'error': 'invalid_auth'}"
-            )
