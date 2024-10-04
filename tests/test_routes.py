@@ -1,8 +1,6 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
-from flask import session
-
 # pylint: disable=C0411
 from slack_sdk.errors import SlackApiError
 
@@ -23,15 +21,7 @@ class TestSubmitDNSRequest(unittest.TestCase):
         self.form_data = {
             "requestor_name": "g",
             "requestor_email": "g.g@gmail.com",
-            "service_owner": "f",
-            "service_area": "f",
-            "business_area": "hmpps",
-            "dns_record": "test.example.com",
-            "ttl": "300",
-            "record_type": "ns",
-            "ns_values": "ns1.example.com, ns2.example.com",
-            "record_name": "test",
-            "domain_name": "example.com",
+            "request_details": "g",
         }
 
     def login_as_user(self):
@@ -49,29 +39,24 @@ class TestSubmitDNSRequest(unittest.TestCase):
     def test_create_record_get_unauthenticated(self):
         response = self.client.get("/create-record")
         self.assertEqual(response.status_code, 302)
-        # Check the redirect location is to the login page (root in your case "/")
         self.assertIn("/", response.location)
 
     @patch("app.main.middleware.auth.requires_auth", return_value=True)
     def test_submit_dns_request_success(self, mock_auth):
         self.login_as_user()
-        issue_link = "https://github.com/example/issue/1"
-        pr_link = "https://github.com/example/pull/1"
+        issue_link = "https://github.com/example/issues/1"
         self.github_service.submit_issue.return_value = issue_link
-        self.github_service.create_pr.return_value = pr_link
 
         response = self.client.post("/create-record", data=self.form_data)
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"https://github.com/example/pull/1", response.data)
+        self.assertIn(b"Request #1", response.data)
 
     @patch("app.main.middleware.auth.requires_auth", return_value=True)
     def test_slack_api_error_handling(self, mock_auth):
         self.login_as_user()
         issue_link = "https://github.com/example/issue/1"
-        pr_link = "https://github.com/example/pull/1"
         self.github_service.submit_issue.return_value = issue_link
-        self.github_service.create_pr.return_value = pr_link
 
         # Simulate SlackApiError being raised
         self.slack_service.send_message_to_plaintext_channel_name.side_effect = (
