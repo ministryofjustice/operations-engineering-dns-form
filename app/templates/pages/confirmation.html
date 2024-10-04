@@ -7,12 +7,18 @@
 {% block content %}
 {{ super() }}
 
-<h1 class="govuk-heading-xl">DNS Record Request Submitted</h1>
+<h1 class="govuk-heading-xl">Your DNS Request Has Been Submitted</h1>
 
-<p class="govuk-body">Thank you for your request. Your DNS record request has been successfully submitted. You can track the progress of your request using the link below:</p>
+<p class="govuk-body">Thank you for submitting your DNS record request. We have successfully logged it, and someone from the team will be in touch shortly.</p>
 
-<p class="govuk-body"><a href="{{ pr_url }}" class="govuk-link" target="_blank">{{ pr_url }}</a></p>
+<p class="govuk-body">Your request has been logged with the following reference number:</p>
 
-<p class="govuk-body">If you need to get in touch with the team performing the DNS changes, please email <a href="mailto:domains@service.justice.gov.uk" class="govuk-link">domains@service.justice.gov.uk</a> or use the Ministry of Justice Slack channel <strong>#ask-operations-engineering</strong>.</p>
+<p class="govuk-body">
+    <strong>Request #{{ issue_number }}</strong>
+</p>
+
+<p class="govuk-body">Please quote this issue number if you need to follow up with the team.</p>
+
+<p class="govuk-body">For further assistance or if you have any questions, feel free to contact us via email at <a href="mailto:domains@service.justice.gov.uk" class="govuk-link">domains@service.justice.gov.uk</a> or reach out to the team in the <strong>#ask-operations-engineering</strong> channel on the Ministry of Justice Slack.</p>
 
 {% endblock %}
