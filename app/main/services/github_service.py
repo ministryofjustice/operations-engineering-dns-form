@@ -22,7 +22,7 @@ class GithubService:
         body = (
             f"**Requestor Name:** {form_data['requestor_name']}\n\n"
             f"**Requestor Email:** {form_data['requestor_email']}\n\n"
-            f"**Request Detail:** {form_data['request_details']}\n\n"
+            f"**Request Details:** {form_data['request_details']}\n\n"
         )
 
         labels = ["dns-request", "add-record-request"]
