@@ -42,7 +42,7 @@ class TestGithubService(unittest.TestCase):
             body=(
                 "**Requestor Name:** test\n\n"
                 "**Requestor Email:** test@test.com\n\n"
-                "**Request Detail:** Some more details\n\n"
+                "**Request Details:** Some more details\n\n"
             ),
             labels=["dns-request", "add-record-request"],
         )
@@ -61,7 +61,7 @@ class TestGithubService(unittest.TestCase):
             body=(
                 "**Requestor Name:** test\n\n"
                 "**Requestor Email:** test@test.com\n\n"
-                "**Request Detail:** Some more details\n\n"
+                "**Request Details:** Some more details\n\n"
             ),
             labels=["dns-request", "add-record-request"],
         )
