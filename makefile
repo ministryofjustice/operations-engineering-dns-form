@@ -17,7 +17,7 @@ help:
 	@echo "make lint             - Run Lint tools"
 	@echo "make report           - Open the Code Coverage report"
 
-venv: Pipefile
+venv:
 	pip3 install --user pipenv
 	pipenv install
 
