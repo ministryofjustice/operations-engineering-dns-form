@@ -17,26 +17,25 @@ help:
 	@echo "make lint             - Run Lint tools"
 	@echo "make report           - Open the Code Coverage report"
 
-venv: requirements.txt
-	python3 -m venv venv
-	venv/bin/pip3 install --upgrade pip
-	venv/bin/pip3 install -r requirements.txt
+venv: Pipefile
+	pip3 install --user pipenv
+	pipenv install
 
 # Run MegaLinter
 lint:
 	npx mega-linter-runner -e 'SHOW_ELAPSED_TIME=true'
 
 format: venv
-	venv/bin/pip3 install black
-	venv/bin/black $(PYTHON_SOURCE_FILES)
+	pipenv install black
+	pipenv run black $(PYTHON_SOURCE_FILES)
 
 test: venv
-	venv/bin/pip3 install pytest
-	venv/bin/pip3 install coverage
-	venv/bin/coverage run -m pytest tests/ -v
+	pipenv install pytest
+	pipenv install coverage
+	pipenv run coverage run -m pytest tests/ -v
 
 report:
-	venv/bin/coverage html && open htmlcov/index.html
+	pipenv run coverage html && open htmlcov/index.html
 
 clean-test:
 	rm -fr venv
@@ -48,7 +47,7 @@ clean-test:
 	rm -fr htmlcov/
 
 local: venv
-	venv/bin/python3 -m app.run
+	pipenv run python3 -m app.run
 
 # Assumes you've already built the image locally
 docker-up:
