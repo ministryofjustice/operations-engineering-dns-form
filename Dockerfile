@@ -13,10 +13,12 @@ RUN apk add --no-cache --no-progress \
 
 WORKDIR /home/operations-engineering-dns-form
 
-COPY requirements.txt requirements.txt
+COPY Pipfile Pipfile
+COPY Pipfile.lock Pipfile.lock
 COPY app app
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir pipenv==2024.1.0 \
+  && pipenv install --system --deploy --ignore-pipfile
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
