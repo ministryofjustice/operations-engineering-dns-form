@@ -19,19 +19,19 @@ help:
 
 venv:
 	pip3 install --user pipenv
-	pipenv install
+	pipenv install --dev
 
 # Run MegaLinter
 lint:
 	npx mega-linter-runner -e 'SHOW_ELAPSED_TIME=true'
 
 format: venv
-	pipenv install black
+	pipenv install black --dev
 	pipenv run black $(PYTHON_SOURCE_FILES)
 
 test: venv
-	pipenv install pytest
-	pipenv install coverage
+	pipenv install pytest --dev
+	pipenv install coverage --dev
 	pipenv run coverage run -m pytest tests/ -v
 
 report:
