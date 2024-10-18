@@ -1,6 +1,6 @@
 app:
   ingress:
-    host: "dns-form-dev.cloud-platform.service.justice.gov.uk"
+    host: "dev.change-dns.service.justice.gov.uk"
 
   deployment:
     replicaCount: 1
