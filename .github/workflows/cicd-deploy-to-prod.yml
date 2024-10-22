@@ -6,16 +6,18 @@ on:
     tags:
       - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
 env:
+  KUBE_CERT: ${{ secrets.PROD_KUBE_CERT }}
   KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
   KUBE_NAMESPACE: ${{ secrets.PROD_KUBE_NAMESPACE }}
-  KUBE_CERT: ${{ secrets.PROD_KUBE_CERT }}
   KUBE_TOKEN: ${{ secrets.PROD_KUBE_TOKEN }}
 
-  IMAGE_TAG: ${{ github.ref_name }}
-  ECR_REGISTRY: ${{ vars.PROD_ECR_REGISTRY }}
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY_URL }}
   ECR_REPOSITORY: ${{ vars.PROD_ECR_REPOSITORY }}
+  IMAGE_TAG: ${{ github.ref_name }}
 
-  ADMIN_GITHUB_TOKEN: ${{ secrets.PROD_ADMIN_GITHUB_TOKEN }}
+  ADMIN_GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+  AUTH0_CLIENT_ID: ${{ secrets.PROD_AUTH0_CLIENT_ID }}
+  AUTH0_CLIENT_SECRET: ${{ secrets.PROD_AUTH0_CLIENT_SECRET }}
   FLASK_APP_SECRET: ${{ secrets.PROD_FLASK_APP_SECRET }}
   SENTRY_DSN_KEY: ${{secrets.SENTRY_DSN_KEY }}
 
@@ -38,7 +40,7 @@ jobs:
           role-to-assume: ${{ secrets.PROD_ECR_ROLE_TO_ASSUME }}
           aws-region: ${{ vars.PROD_ECR_REGION }}
 
-      - uses: aws-actions/amazon-ecr-login@v2
+      - uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
         id: login-ecr
       - run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
@@ -71,6 +73,8 @@ jobs:
             --wait \
             --namespace ${KUBE_NAMESPACE} \
             --values=helm/dns-form/values-prod.yaml \
+            --set app.deployment.env.AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID} \
+            --set app.deployment.env.AUTH0_CLIENT_SECRET=${AUTH0_CLIENT_SECRET} \
             --set app.deployment.env.APP_SECRET_KEY=${FLASK_APP_SECRET} \
             --set app.deployment.env.ADMIN_GITHUB_TOKEN=${ADMIN_GITHUB_TOKEN} \
             --set app.deployment.env.SENTRY_DSN_KEY=${SENTRY_DSN_KEY} \
